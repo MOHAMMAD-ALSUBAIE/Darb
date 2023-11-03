@@ -8,3 +8,8 @@ body {
 label {
     color: #000;
 }
+#root{
+    margin: 0;
+    padding: 0;
+}
+

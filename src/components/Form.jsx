@@ -2,9 +2,12 @@ import InputField from "./InputField";
 import Options from "./Options";
 import Button from "./Button";
 export default function Form() {
+    const handelSubmit = (e) => {
+        e.preventDefault();
+    }
     return (
-        <div>
-            <form className="border rounded-lg relative top-[250px]  border-[#AFB5B5] w-[70%]">
+        <div >
+            <form onSubmit={handelSubmit} className="border rounded-lg bg-white relative mt-[40px] top-[-305px] z-10  border-[#AFB5B5] w-[70%]">
              <section className="m-[30px]">
              <div className="flex gap-8 mb-[15px] flex-wrap">
                     <InputField

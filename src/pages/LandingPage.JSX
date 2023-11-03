@@ -1,7 +1,8 @@
 import Header from "../components/Header";
-import Conatiner from "../components/container";
+import Body from "../components/Body";
 export default function LandingPage() {
-    return <Conatiner>
+    return <>
         <Header />
-    </Conatiner>;
+        <Body/>
+    </>;
 }
