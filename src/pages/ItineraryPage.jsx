@@ -1,5 +1,5 @@
 
 
 export default function ItineraryPage() {
-    return <></>;
+    return <h1>Itinerary Page</h1>;
 }
