@@ -9,17 +9,18 @@ export default function InputField(props) {
                 {props.label}
             </label>
             <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                    <InputFieldIcon />
-                </div>
+                {props.icon?    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <InputFieldIcon icon={props.icon} />
+                </div>:null}
+             
 
                 <input
                     type={props.type}
                     id={props.name}
-                    className={`${props.width} bg-[#fff] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                    className={` xl:w-[230px] md:w-[140px]  w-[400px]   bg-[#fff] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ${props.icon?"pl-10":''} p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder={props.placeholder}
                     name={props.name}
-                    style={{width: props.width}}
+               
                 />
             </div>
         </div>
