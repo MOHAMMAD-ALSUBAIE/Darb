@@ -6,13 +6,30 @@ import IPhone from "/iPhone.png";
 import CloudArrow from "/CloudArrowUp.png";
 import Button from "./Button.jsx";
 import iconArrow from "/icon _chevron-right_.png";
+import { useEffect, useState } from 'react';
+import { client } from "@gradio/client";
 export default function Body(props) {
-  const handelClick = () => {
-    document.getElementById("image").click();
+const handelClick=()=>{
+  document.getElementById("image").click();
+}
+
+  const [imageFile, setImageFile] = useState(null);
+  
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    console.log(file)
+    setImageFile(file);
   };
-  const handelSubmit = (e) => {
-    e.preventDefault();
+
+  const handlePredict = async (e) => {
+    e.preventDefault()
+    if (!imageFile) {
+      console.error("Please select an image first.");
+      return;
+    }
+  
   };
+
   return (
     <div className="md:bg-[#0F0839] bg-[#904dba69]   text-[#fff]">
       {/* <Conatiner> */}
@@ -41,10 +58,11 @@ export default function Body(props) {
             <p className="text-[#230751] font-bold">
               Capture or upload image here
             </p>
-            <input id="image" style={{ display: "none" }} name="image" type="file" />
+            <input onChange={handleFileUpload}  id="image" style={{ display: "none" }} name="image" type="file" required/>
 
-            <form onSubmit={handelSubmit}>
+            <form onSubmit={handlePredict}>
               <Button
+                 
                 class="flex mt-4 rounded-lg bg-[#9A9A9A] w-[196px] items-center justify-center h-[40px]"
                 type="submit"
               >

@@ -1,5 +1,13 @@
+import Banner from "../components/ItineraryPageComponets/Banner";
+import ItineraryBody from "../components/ItineraryPageComponets/ItineraryBody";
 
 
 export default function ItineraryPage() {
-    return <h1>Itinerary Page</h1>;
+    return <>
+
+    <Banner class="w-[100%] h-[350px]" />
+   
+    <ItineraryBody/>
+
+    </>;
 }
