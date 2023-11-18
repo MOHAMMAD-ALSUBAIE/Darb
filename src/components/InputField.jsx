@@ -17,7 +17,7 @@ export default function InputField(props) {
                 <input
                     type={props.type}
                     id={props.name}
-                    className={` xl:w-[230px] md:w-[140px]  w-[400px]   bg-[#fff] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ${props.icon?"pl-10":''} p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                    className={` xl:w-[230px] md:w-[140px]  w-[400px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ${props.icon?"pl-10":''} p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder={props.placeholder}
                     name={props.name}
                

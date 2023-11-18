@@ -2,7 +2,9 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        extend: {},
+        extend: {
+            transitionDuration: ['block','hidden']
+        },
         fontFamily: {
             'ElMessiri': ["El Messiri", 'Roboto'],
              'IBMPlexSans': ["IBM Plex Sans", 'Roboto'],

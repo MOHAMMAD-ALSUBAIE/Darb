@@ -14,10 +14,10 @@ export default function Form() {
     e.preventDefault();
   };
   return (
-    <div>
+    <div >
       <form
         onSubmit={handelSubmit}
-        className="border rounded-lg bg-white  relative mt-[40px] md:top-[-305px] top-[-102px] z-10  border-[#AFB5B5] xl:w-[80%]"
+        className="border rounded-lg md:ml-0 bg-white  relative mt-[40px] md:top-[-305px] top-[-102px] z-10  border-[#AFB5B5]  min-[1900px]:w-[70%] min-[1750px]:w-[80%] xl:w-[90%] min-[414px]:ml-4 min-[390px]:ml-1 min-[430px]:ml-6 min-[390px]:w-[380px]"
       >
         <section className="m-[30px]">
           <div className="flex gap-8 mb-[15px] flex-wrap md:justify-start justify-center">

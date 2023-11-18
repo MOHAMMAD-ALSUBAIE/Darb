@@ -15,7 +15,7 @@ export default function Options(props) {
         <select
             type={props.type}
             id={props.id}
-            className="bg-[#fff] w-[400px] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block md:w-full pl-10 p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-[#fff] w-[400px] min-[390px]:w-[350px] min-[375px]:w-[375px] border border-[#AFB5B5] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block md:w-full pl-10 p-2.5  dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder={props.placeholder}
             name={props.name}
         >

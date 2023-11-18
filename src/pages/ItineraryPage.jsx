@@ -3,11 +3,12 @@ import ItineraryBody from "../components/ItineraryPageComponets/ItineraryBody";
 
 
 export default function ItineraryPage() {
-    return <>
 
+    return (
+    <>
     <Banner class="w-[100%] h-[350px]" />
    
-    <ItineraryBody/>
+    <ItineraryBody />
 
-    </>;
+    </>)
 }
