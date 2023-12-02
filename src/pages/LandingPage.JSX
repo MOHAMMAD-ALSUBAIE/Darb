@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import Body from "../components/Body";
 import Footer from "../components/Footer";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import Card from "../components/Card";
 import closeIcon from "/closeIcon.png"
 export default function LandingPage() {
@@ -24,8 +25,7 @@ export default function LandingPage() {
         <Body  />
         <Footer/>
         </div>
-
-
+           
 
             
  

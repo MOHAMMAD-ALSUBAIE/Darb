@@ -1,7 +1,8 @@
 import { useState } from "react"
 export default function Card(props){
     const [loadingImage,setLoadingImage]=useState(true)
-   function handelClick(event){
+    console.log(props.dataOfClassifierImage.description?.image_url)
+   function handelClick(){
    
    props.close()
    }
@@ -24,13 +25,13 @@ return(
       {props.dataOfClassifierImage.prediction}
                     </h5>
                     <hr className="bg-black border border-black md:my-2  w-[100%]"/>
-      <p className="mb-[10rem]  text-[24px]  text-[#012c4165] self-center text-center  md:w-[120%] w-[90%]" >
+      <p className="mb-[10rem] font-IBMPlexSans  text-[24px]  text-[#012c4165] self-center text-center  md:w-[120%] w-[90%]" >
       {props.dataOfClassifierImage.description?.description}
     
     
       </p>
     </div>
-    <img id="close" src={props.closeIcon} onClick={handelClick} className="w-[20px] cursor-pointer  self-start mt-1 ml-1 h-[20px]  md:order-3 order-1 md:relative md:right-3 md:top-3   right-[10px] top-[10px] absolute"/>
+    <img id="close" src={props.closeIcon} onClick={handelClick} className="w-[20px] cursor-pointer  self-start mt-1 ml-1 h-[20px] transition-all hover:w-[25px] hover:h-[25px]   md:order-3 order-1 md:relative md:right-3 md:top-3   right-[10px] top-[10px] absolute"/>
 
     </div>
 )

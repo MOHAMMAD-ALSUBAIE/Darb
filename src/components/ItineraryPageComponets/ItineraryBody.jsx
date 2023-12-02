@@ -3,7 +3,12 @@ import favorite from "/Vector.png";
 import H1 from "../Headers/H1";
 import almasmak from "/almasmak-fortress.png";
 import ItineraryButton from "./ItineraryButton";
+import { useContext } from "react";
+import { AppContext } from "../ContextAPI/ContextApp";
+
 export default function ItineraryBody(props) {
+  const {Itinerary}=useContext(AppContext)
+  console.log(Itinerary)
   return (
     <section className=" flex max-[600px]:flex-col gap-7 mx-[10%] mt-4">
       <div>

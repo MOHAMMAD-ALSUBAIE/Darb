@@ -1,0 +1,24 @@
+.options li{
+    height: 50px;
+    margin-bottom: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 13px;
+  font-size: 15px;
+  font-weight: bold;
+
+   }
+   .options li:hover{
+    background-color: #f2f2f2;
+     
+  
+   }
+
+   .wrapper.active .content{
+    display: block;
+   }
+
+ 
+   .wrapper.active .select-btn .angleDown{
+    transform: rotate(-180deg);
+   }

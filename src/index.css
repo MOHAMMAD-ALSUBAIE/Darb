@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=IBM+Plex+Sans&family=Roboto:wght@700&display=swap');@tailwind base;
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=IBM+Plex+Sans+Arabic&display=swap');
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
     color: black;
+    background-color: #F5F8FF;
 }
 label {
     color: #000;

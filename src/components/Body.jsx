@@ -59,6 +59,7 @@ export default function Body(props) {
 
 
     setDataOfClassifierImage(data);
+    console.log(dataOfClassifierImage)
     setOverflow(true)
     setLoading(false)
     } catch (e) {
