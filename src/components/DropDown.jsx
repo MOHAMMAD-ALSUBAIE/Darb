@@ -1,7 +1,8 @@
 import { useState } from "react";
 export default function DropDown(props) {
-  const handelClick = () => {
     const title = props.title;
+    console.log(props.widthXL)
+  const handelClick = () => {
     console.log("clicked me", props.title, props.active[props.title]);
     props.clicked((prev) => {
       return {
@@ -13,16 +14,20 @@ export default function DropDown(props) {
       };
     });
   };
+
+
   return (
-    <div>
+    <div  >
       <button
         id={props.title}
         data-dropdown-toggle="dropdownDefaultCheckbox"
-        className="w-[200px] font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 flex justify-around items-center mt-6  xl:w-[230px] md:w-[140px]  h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+        className={" px-2  font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 flex justify-around items-center mt-1    h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border focus:border-[3px]  text-sm rounded-lg  focus:border-blue-500"+`md:[${props.widthXL}]`}
         type="button"
         onClick={handelClick}
+        
       >
-        {props.title}{" "}
+        <img src={props.icon}/>
+        {props.placeHolder}{" "}
         <svg
           className="w-2.5 h-2.5 ms-3 "
           aria-hidden="true"
@@ -41,19 +46,23 @@ export default function DropDown(props) {
       </button>
       {/* Dropdown menu */}
       <div
+        
+      
         id="dropdownDefaultCheckbox"
         className={`z-10 ${
-          props.active[props.title] ? "block" : "hidden"
-        } w-48 bg-white divide-y divide-gray-100 rounded-lg shadow absolute   xl:w-[230px] md:w-[140px]  min-[390px]:w-[350px]  min-[375px]:w-[375px]`}
+          props.active[props.title] ? `visible ${props.classNameCustom}` : "invisible top-0"
+        } w-48 bg-white divide-y duration-200 top-0 divide-gray-100 transition-all rounded-lg shadow absolute   xl:w-[230px] md:w-[140px]  min-[390px]:w-[350px]  min-[375px]:w-[375px]`}
       >
         <ul
+           
           className="p-3 space-y-3 text-sm text-gray-700  xl:w-[230px] md:w-[140px]   min-[390px]:w-[350px]  min-[375px]:w-[375px]"
           aria-labelledby="dropdownCheckboxButton"
         >
           {props.tags.map((attraction, id) => (
-            <li key={id}>
-              <div className="flex items-center  xl:w-[230px] md:w-[140px]   min-[390px]:w-[350px]  min-[375px]:w-[375px]">
+            <li key={id} className="hover:bg-[#f2f2f2] p-2 w-[100%] rounded">
+              <div    className="flex items-center  xl:w-[230px] md:w-[140px]   min-[390px]:w-[350px]  min-[375px]:w-[375px]">
                 <input
+                  
                   id={attraction}
                   type="checkbox"
                   name={props.title + "-" + id}
@@ -65,7 +74,7 @@ export default function DropDown(props) {
                 />
                 <label
                   htmlFor={attraction}
-                  className="font-IBMPlexSans ms-2 text-md font-medium text-gray-900 hover:bg-[#7979797f] p-2 w-[100%] "
+                  className="font-IBMPlexSans ms-2 text-md font-medium text-gray-900  p-2  "
                 >
                   {attraction}
                 </label>

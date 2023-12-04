@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import Route from "./Routers/itinerary.route";
+import Route from "./src/Routers/itinerary.route";
 import cors from 'cors'
 const port=process.env.PORT||3000
 const app= express()

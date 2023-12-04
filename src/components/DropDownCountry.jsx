@@ -83,20 +83,22 @@ const handlerSelectCounter=(e)=>{
     console.log(props.active.options)
    
   }
+
+
 return(
-   <div ref={wrapper}   className={`dropdown ${props.customClassName} ${props.active.options?"active":""} wrapper w-[${props.width}] relative z-50 top-1`}>
-    <div onClick={handelSelectBtn} className=" dropdown select-btn  mt-3 flex cursor-pointer   bg-[#FFFFFF]  py-0 px-[20px] rounded-[7px] text-[18px] items-center justify-between ">
-    <span className="dropdown">{selectCountry?selectCountry:"Select Country "}  </span>
+   <div ref={wrapper}   className={`font-IBMPlexSans dropdown ${props.customClassName} ${props.active.options?"active":""} wrapper w-[${props.width}] relative z-50 top-1`}>
+    <div  onClick={handelSelectBtn}  className=" dropdown select-btn  mt-3 flex cursor-pointer   bg-[#FFFFFF]  py-0 px-[20px] rounded-[7px] text-[14px] items-center justify-between ">
+    <span className="dropdown flex gap-1"><img src={props.icon}/>{selectCountry?selectCountry:props.placeHolder}  </span>
     <svg className="angleDown transition-all ease-in duration-300 dropdown" xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>    
 
     </div>
     <div className="content absolute hidden w-[100%] bg-[#FFFFFF] p-[20px] mt-[15px] rounded-[7px]">
-        <div className=" search flex relative">
+       {!props.useForCity? <div className=" search flex relative">
         <svg className="absolute left-[15px] self-center " xmlns="http://www.w3.org/2000/svg" height="17" width="17" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
           <input onChange={handelSearchChange}  type="text" className=" bg-[#FFFFFF] h-[36px] w-[100%] text-[17px] py-0 pr-[15px]  pl-[43px] outline  outline-0  border-solid border-[1px] border-[#b3b3b3] rounded-[5px] " placeholder="Search"/>
 
 
-        </div>
+        </div>:""}
         <ul className={`options mt-[10px] max-h-[250px] overflow-y-auto`}>
 
           {search? '': props.options.map((item)=>{

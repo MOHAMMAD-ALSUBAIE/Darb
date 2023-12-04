@@ -2,109 +2,245 @@ import InputField from "./InputField";
 import Options from "./Options";
 import Button from "./Button";
 import InputFieldIcon from "./InputFieldIcon";
-import dateIcon from "/dateIcon.png";
-import dollarIcon from "/dollarIcon.png";
+import shopping from "/shopping.png";
+import Attraction from "/Attraction.png";
 import searchIcon from "/searchIcon.png";
-import starIcon from "/starIcon.png";
-import travelIcon from "/travelIcon.png";
+import etableDrinkable from "/etableDrinkable.png";
 import locationIcon from "/locationIcon.png";
-import DateRange from './DateRange.jsx'
-import DropDown from "./DropDown.jsx"
+import DateRange from "./DateRange.jsx";
+import DropDown from "./DropDown.jsx";
 import { useContext, useState } from "react";
 import { AppContext } from "./ContextAPI/ContextApp";
- import DropDownCountry from "./DropDownCountry.jsx";
-import {  useNavigate } from "react-router-dom";
+import DropDownCountry from "./DropDownCountry.jsx";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function Form() {
-const [date,setDate]=useState()
-const [selectCity,setSelectCity]=useState("")
-const {Itinerary,setItinerary}=useContext(AppContext)
-const navigate=useNavigate()
-const [active,setActive]=useState({
-  options:false,
-  Attractions:false,
-  Restaurants:false,
-  Shopping:false
-})
-const cities = [
-  "Abha", "Al_Ahsa", "Al_Baha", "Al_Jouf",
-  "Al_Khobar", "Al_Taif", "AlUla", "Dahran",
-  "Dammam", "Diriyah", "Hail", "Jazan",
-  "Jeddah", "Jubail", 
-  "King_Abdullah_Economic_City", "Madinah",
-  "Makkah", "Riyadh"
-  ]
+  const [date, setDate] = useState();
+  const [error, setError] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [selectCity, setSelectCity] = useState("");
+  const { Itinerary, setItinerary } = useContext(AppContext);
+  const navigate = useNavigate();
+  const [active, setActive] = useState({
+    options: false,
+    Attractions: false,
+    Restaurants: false,
+    Shopping: false,
+  });
+  const cities = [
+    "Abha",
+    "Al_Ahsa",
+    "Al_Baha",
+    "Al_Jouf",
+    "Al_Khobar",
+    "Al_Taif",
+    "AlUla",
+    "Dahran",
+    "Dammam",
+    "Diriyah",
+    "Hail",
+    "Jazan",
+    "Jeddah",
+    "Jubail",
+    "King_Abdullah_Economic_City",
+    "Madinah",
+    "Makkah",
+    "Riyadh",
+  ];
 
-const Attractions= ["Family & Kids", "Amusement Parks", "Cultural & Historical", "Iconic Landmarks", "Parks", "Nature & wildlife"]
-const Restaurants=["Fast Food", "Bakery & Cafe", "Specialty Coffee", "Saudi Traditional dishes", "Fine Dining", "Seafood"]
-const Shopping=["Traditional Markets", "Malls"]
+  const Attractions = [
+    "Family & Kids",
+    "Amusement Parks",
+    "Cultural & Historical",
+    "Iconic Landmarks",
+    "Parks",
+    "Nature & wildlife",
+  ];
+  const Restaurants = [
+    "Fast Food",
+    "Bakery & Cafe",
+    "Specialty Coffee",
+    "Saudi Traditional dishes",
+    "Fine Dining",
+    "Seafood",
+  ];
+  const Shopping = ["Traditional Markets", "Malls"];
 
-const handelActive=(actving)=>{
-  setActive(actving)
-}
-const handelDateValue=(newValue)=>{
-  console.log(newValue)
-  setDate(newValue)
-}
-const handelSelectCity=(city)=>{
-  setSelectCity(city)
-}
+  const handelActive = (actving) => {
+    setActive(actving);
+  };
+  const handelDateValue = (newValue) => {
+    console.log(newValue);
+    setDate(newValue);
+  };
+  const handelSelectCity = (city) => {
+    setSelectCity(city);
+  };
   const handelSubmit = async (e) => {
     e.preventDefault();
-    
+    setActive({
+      options: false,
+      Attractions: false,
+      Restaurants: false,
+      Shopping: false,
+    });
+    setLoad(true);
+
     const formData = new FormData(e.target);
-    console.log(formData,selectCity,date)
-    const arrayData=Array.from(formData)
-  await axios.post("http://localhost:3000/API/itinerary", {
-    arrayData,selectCity,date
-  })
-  //   setItinerary({
-      
-  //   })
+    const arrayData = Array.from(formData);
+    //console.log(arrayData,selectCity,date)
+    let res;
+    //console.log(date)
+    if (date?.startDate && date?.startDate && selectCity) {
+      res = await axios.post("http://localhost:3000/API/itinerary", {
+        arrayData,
+        selectCity,
+        date,
+      });
+    } else {
+      setError(true);
+    }
 
-  //  navigate("/Itinerary")
+    console.log(res);
+    setLoad(false);
+
+    setItinerary(res.data.itinerary);
+
+    navigate(`/Itinerary?id=${res.data.id}`);
   };
-//   const handelClickForm=(e)=>{
-//     setStateClickedForm(e.target.id)
-// console.log(e.target)
-//   }
+  const handelClickForm = (e) => {
+    if (e.target.classList.contains("form")) {
+      setActive({
+        options: false,
+        Attractions: false,
+        Restaurants: false,
+        Shopping: false,
+      });
+    }
+    // setActive({
+    //   options:false,
+    //   Attractions:false,
+    //   Restaurants:false,
+    //   Shopping:false
+    // })
+  };
+  //   const handelClickForm=(e)=>{
+  //     setStateClickedForm(e.target.id)
+  // console.log(e.target)
+  //   }
   return (
-    <div id='form' className="" >
-      <form
-      id='forma'
-        //  onClick={handelClickForm}
-        onSubmit={handelSubmit}
-        className="border rounded-lg md:ml-0 bg-white  relative mt-[40px] md:top-[-305px] top-[-102px] z-1  border-[#AFB5B5]  min-[1900px]:w-[70%] min-[1750px]:w-[80%] xl:w-[90%] min-[414px]:ml-4 min-[390px]:ml-1 min-[430px]:ml-6 min-[390px]:w-[380px]"
-      >
-        <section id='forms' className="m-[30px]">
-          <div id='formDiv' className="flex gap-8 mb-[15px] flex-wrap md:justify-start justify-center">
-          {/* <DropDown tags={cities} title="Destination" /> */}
-            <div>
-              <label className="relative top-1">Destination</label>
-            <DropDownCountry ID={'options'} clicked={handelActive} active={active} options={cities} selectCity={handelSelectCity} width="200px" customClassName="border border-1 border-gray-600 rounded-lg h-[44px] xl:w-[230px] md:w-[140px]  w-[400px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 "/>
+    <>
+      <div id="form" className="form">
+        <form
+          onClick={handelClickForm}
+          id="forma"
+          //  onClick={handelClickForm}
+          onSubmit={handelSubmit}
+          className="form closeHoverIn border rounded-2xl md:ml-0 bg-white  relative mt-[40px] md:top-[-305px] top-[-102px] z-1  border-[#AFB5B5]  min-[1900px]:w-[70%] min-[1750px]:w-[80%] xl:w-[90%] min-[414px]:ml-4 min-[390px]:ml-1 min-[430px]:ml-6 min-[390px]:w-[380px]"
+        >
+          <div
+            className={`absolute ${
+              error ? "block" : "hidden "
+            }  rounded-md bg-red-700 text-white p-2 left-[20%] bottom-[110%]`}
+          >
+            Please ensure that you have filled out all the required fields
+            before submitting the form.
+          </div>
+          {load ? (
+            <div className="lds-ripple absolute z-40 left-[45%] top-[20%] ">
+              <div></div>
+              <div></div>
             </div>
-        <DateRange handelDateValue={handelDateValue} />
-        <DropDown clicked={handelActive} active={active} tags={Attractions} title="Attractions"/>
+          ) : (
+            ""
+          )}
 
-          </div>
-          <div className="flex md:flex-nowrap  z-40 flex-wrap  gap-8 md:justify-start justify-center">
-        
-
-           
-           <DropDown clicked={handelActive} active={active} tags={Restaurants} title="Restaurants"/>
-           <DropDown clicked={handelActive} active={active} tags={Shopping} title="Shopping"/>
-
-           {/* <DropDownCountry/> */}
-            <Button
-             
-              class="self-end flex items-center justify-center md:w-[40px] md:h-[40px] w-[400px] h-[40px] rounded-[10px] bg-[#230751]"
-              type="submit"
+          <section id="forms" className="form m-[30px] relative z-30">
+            <div
+              id="formDiv"
+              className=" form flex items-center gap-8 mb-[15px] flex-wrap md:justify-start justify-center"
             >
-              <InputFieldIcon  icon={searchIcon}/>
-            </Button>
-          </div>
-        </section>
-      </form>
-    </div>
+              {/* <DropDown tags={cities} title="Destination" /> */}
+              <div>
+                <label className="relative top-1 font-IBMPlexSans font-bold">
+                  Destination
+                </label>
+                <DropDownCountry
+                  ID={"options"}
+                  clicked={handelActive}
+                  active={active}
+                  options={cities}
+                  selectCity={handelSelectCity}
+                  useForCity={true}
+                  width="200px"
+                  icon={locationIcon}
+                  placeHolder="E.g.,Riyadh, Dammam"
+                  customClassName="border border-1 focus:border-blue-500 border-gray-600 rounded-lg h-[44px] xl:w-[230px] md:w-[140px]  w-[400px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 "
+                />
+              </div>
+              <DateRange handelDateValue={handelDateValue} />
+              <div>
+                <label className="relative top-1 font-IBMPlexSans font-bold">
+                  Explore & Discover
+                </label>
+                <DropDown
+                  classNameCustom={"top-[5rem]"}
+                  clicked={handelActive}
+                  active={active}
+                  tags={Attractions}
+                  title="Attractions"
+                  icon={Attraction}
+                  widthXL="200px"
+                  placeHolder={"Family & Kids, Parks, Cultural"}
+                />
+              </div>
+            </div>
+            <div className="form flex md:flex-nowrap  mt-[10px] z-40 flex-wrap  gap-8 md:justify-start justify-center">
+              <div>
+                <label className="relative top-1  font-IBMPlexSans font-bold">
+                Restaurants & Cafes
+                </label>
+
+                <DropDown
+                  classNameCustom={"top-[10.5rem]"}
+                  clicked={handelActive}
+                  active={active}
+                  tags={Restaurants}
+                  icon={etableDrinkable}
+                  widthXL="270px"
+                  placeHolder={"Fast Food, Bakery & Cafe, Fine Dining"}
+                  title="Restaurants"
+                />
+              </div>
+              <div>
+                <label className="relative top-1 font-IBMPlexSans font-bold">
+                Shopping Options
+                </label>
+
+                <DropDown
+                  classNameCustom={"top-[10.5rem]"}
+                  clicked={handelActive}
+                  active={active}
+                  tags={Shopping}
+                  title="Shopping"
+                  icon={shopping}
+                  widthXL={"270px"}
+                  placeHolder={"Traditional Markets, Malls"}
+
+                />
+              </div>
+
+              {/* <DropDownCountry/> */}
+              <Button
+                class="self-end relative bottom-1 flex items-center justify-center md:w-[40px] md:h-[40px] w-[400px] h-[40px] rounded-[10px] bg-[#230751]"
+                type="submit"
+              >
+                <InputFieldIcon icon={searchIcon} />
+              </Button>
+            </div>
+          </section>
+        </form>
+      </div>
+    </>
   );
 }

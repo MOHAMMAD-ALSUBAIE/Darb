@@ -14,13 +14,14 @@ export default function LandingPage() {
         setTransparentBackground(state)
 
     }
+
     // function handelClose(){
         
     //     setClose(true)
     //     console.log(transparentBackground)
     // }
     return (<>
-        <div className={`relative z-20 `}>
+        <div  className={`relative z-20 `}>
         <Header />
         <Body  />
         <Footer/>
