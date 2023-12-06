@@ -6,14 +6,7 @@ const session = new PrismaClient().session;
 const favoritest = new PrismaClient().favoritest;
 
 // Create a custom type that extends the generated type
-interface CustomItineraryArgs extends Prisma.ItineraryFindManyArgs {
-  bannerImage?: boolean;
-  // Add any other custom properties you need
-}
-interface CustomItineraryArgs extends Prisma.ItinerariesInclude {
-  groupBy?:any;
-  // Add any other custom properties you need
-}
+
 
 import bcrypt from "bcrypt";
 
@@ -155,19 +148,6 @@ export const getFavoriteList = async (req: any, res: any) => {
   }
 };
 
-// export  const deleteFromFavoriteList = async (req: any, res: any) => {
-
-//     try {
-//         console.log(req.params.bookID)
-//         if(!req.params.bookID){
-//          throw new Error("bookID is required")
-//         }
-
-//         res.status(202).json({ status:202,massage:"Delete Accepted " ,data:result });
-//     } catch (e) {
-//         res.status(400).json({ massage: "filed" });
-//     }
-// }
 
 export const logout = async (req: any, res: any) => {
   try {
@@ -181,8 +161,3 @@ export const logout = async (req: any, res: any) => {
     res.status(400).json({ massage: "filed" });
   }
 };
-// const a = async () => {
-//     const a = await favoriteBooks.deleteMany();
-//     console.log(a);
-// };
-// a();
