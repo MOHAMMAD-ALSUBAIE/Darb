@@ -1,8 +1,39 @@
-# React + Vite
+Clone and Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Follow these steps to clone and run the project locally.
+Prerequisites
 
-Currently, two official plugins are available:
+Make sure you have the following installed:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    Node.js
+    npm (Node Package Manager)
+Clone the Repository
+
+git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb
+Client Setup
+# Navigate to the client directory
+cd DARB
+
+# Install dependencies
+npm install
+
+# Start the client
+npm run dev
+
+Server Setup
+
+# Navigate to the server directory
+cd Backend
+
+# Install dependencies
+npm install
+
+# Create a .env file based on .env.example and configure your environment variables
+
+
+
+# Seed the database (if applicable)
+npx prisma db push
+
+# Start the server
+nodemon src/index.ts
