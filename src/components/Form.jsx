@@ -1,6 +1,6 @@
 import InputField from "./InputField";
 import Options from "./Options";
-import Button from "./Button";
+// import Button from "./Button";
 import InputFieldIcon from "./InputFieldIcon";
 import shopping from "/shopping.png";
 import Attraction from "/Attraction.png";
@@ -9,9 +9,9 @@ import etableDrinkable from "/etableDrinkable.png";
 import locationIcon from "/locationIcon.png";
 import DateRange from "./DateRange.jsx";
 import DropDown from "./DropDown.jsx";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./ContextAPI/ContextApp";
-import DropDownCountry from "./DropDownCountry.jsx";
+import DropDownCity from "./DropDownCity.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function Form() {
@@ -65,7 +65,9 @@ export default function Form() {
     "Seafood",
   ];
   const Shopping = ["Traditional Markets", "Malls"];
+  
 
+ 
   const handelActive = (actving) => {
     setActive(actving);
   };
@@ -88,25 +90,30 @@ export default function Form() {
 
     const formData = new FormData(e.target);
     const arrayData = Array.from(formData);
-    //console.log(arrayData,selectCity,date)
+     const sanitizeStartDate=date?.startDate.replace(/[^0-9\/\-]/g, '')
+     const sanitizeEndDate=date?.endDate.replace(/[^0-9\/\-]/g, '')
+     const sanitizeCity=selectCity.replace(/[^a-zA-Z\s\-]/g, '')
     let res;
-    //console.log(date)
-    if (date?.startDate && date?.startDate && selectCity) {
-      res = await axios.post("http://localhost:3000/API/itinerary", {
+    console.log(date)
+    if (date?.startDate && date?.endDate && selectCity) {
+      res = await axios.post(`${import.meta.env.VITE_API}/API/itinerary`, {
         arrayData,
-        selectCity,
-        date,
+        sanitizeCity,
+        date:{sanitizeStartDate,sanitizeEndDate},
       });
     } else {
       setError(true);
     }
 
-    console.log(res);
+    console.log(res.data);
+    const   itinerary=res.data.itinerary
+      
     setLoad(false);
 
-    setItinerary(res.data.itinerary);
-
-    navigate(`/Itinerary?id=${res.data.id}`);
+    // setItinerary(res.data.itinerary);
+    localStorage.setItem("Itinerary",JSON.stringify({ItineraryDays:itinerary.itineraryDays,ItineraryDescription:itinerary.ItineraryDescription,city:itinerary.city}))
+   console.log(res.data)
+   navigate(`/Itinerary/${res.data.id}`);
   };
   const handelClickForm = (e) => {
     if (e.target.classList.contains("form")) {
@@ -117,17 +124,9 @@ export default function Form() {
         Shopping: false,
       });
     }
-    // setActive({
-    //   options:false,
-    //   Attractions:false,
-    //   Restaurants:false,
-    //   Shopping:false
-    // })
+
   };
-  //   const handelClickForm=(e)=>{
-  //     setStateClickedForm(e.target.id)
-  // console.log(e.target)
-  //   }
+ 
   return (
     <>
       <div id="form" className="form">
@@ -147,10 +146,10 @@ export default function Form() {
             before submitting the form.
           </div>
           {load ? (
-            <div className="lds-ripple absolute z-40 left-[45%] top-[20%] ">
-              <div></div>
-              <div></div>
-            </div>
+               <div className="flex justify-center absolute z-40 left-[45%] top-[20%]">
+                 <span class="loading"></span>
+             </div>
+         
           ) : (
             ""
           )}
@@ -165,7 +164,9 @@ export default function Form() {
                 <label className="relative top-1 font-IBMPlexSans font-bold">
                   Destination
                 </label>
-                <DropDownCountry
+                <div className="card flex justify-content-center">
+        </div>
+                <DropDownCity
                   ID={"options"}
                   clicked={handelActive}
                   active={active}
@@ -231,12 +232,14 @@ export default function Form() {
               </div>
 
               {/* <DropDownCountry/> */}
-              <Button
-                class="self-end relative bottom-1 flex items-center justify-center md:w-[40px] md:h-[40px] w-[400px] h-[40px] rounded-[10px] bg-[#230751]"
+              <button
+                className="self-end relative bottom-1 flex items-center justify-center md:w-[40px] md:h-[40px] w-[400px] h-[40px] rounded-[10px] bg-[#230751]"
                 type="submit"
+                
               >
+                
                 <InputFieldIcon icon={searchIcon} />
-              </Button>
+              </button>
             </div>
           </section>
         </form>

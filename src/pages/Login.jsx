@@ -1,22 +1,31 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect ,useState} from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import isAuth from ".././functions/IsAuth";
 import closeIcon from "/closeIcon.png"
 import closeDialog from "../functions/CloseDialog";
+import { button } from "@material-tailwind/react";
 export default function LoginForm() {
+  const [error,setError]=useState(false)
+  const [massageError,setMassageError]=useState("")
+  const [load,setLoad]=useState(false)
+
     const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
+    const button=useRef()
     useEffect(  () => {
 
        const asyncFn = async () => {
-            //   const res = await isAuth()
-            //   if (res.data.isAuth) {
-            //       console.log("you are already login in");
-            //       navigate("/");
-            //   } else {
-            //   }
+             try {
+              const res = await isAuth()
+              if (res.data.isAuth) {
+                  console.log("you are already login in");
+                  navigate("/");
+              } 
+             } catch (error) {
+              console.log(error.response)
+             }
        }
        asyncFn();
         
@@ -24,52 +33,46 @@ export default function LoginForm() {
     }, []);
     const handlerSubmit = async (event) => {
         event.preventDefault();
+        button.current.classList.add("bg-[#230751b6]")
         const emailInput = email.current.value;
         const passwordInput = password.current.value;
-        console.log(import.meta.env.VITE_API);
-        let res;
-        axios.defaults.withCredentials = true;
-        axios
-            .post(`${import.meta.env.VITE_API}/user/login`, {
-                email: emailInput,
-                password: passwordInput,
+        const passwordInputSanitized=passwordInput.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        if(emailPattern.test(emailInput)){
+           try {
+            axios.defaults.withCredentials = true;
+            setLoad(true)
+            const response = await axios.post(`${import.meta.env.VITE_API}/user/login`, {
+              email: emailInput,
+              password:passwordInputSanitized
             })
-            .then((response) => {
-                console.log(response);
-                res = response.data.isAuth;
-                if (res&& response.data.role==="ADMIN") {
+            setLoad(false)
+            if (response.data.isAuth) {
 
-                    navigate("/adminPanel/");
-                }
-                else if(res){
+                navigate("/")
+            }
+           } catch (error) {
+            button.current.classList.remove("bg-[#230751b6]")
 
-                    navigate("/books")
-                }
-            })
-            .catch((err) => console.log(err));
-
-        // const response = await fetch(`${import.meta.env.VITE_API}/user/login`, {
-        //     method: "POST",
-
-        //     credentials: "include",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         email: emailInput,
-        //         password: passwordInput,
-        //     }),
-        // });
-        // const data = await response.json();
-        // console.log(data);
+            setLoad(false)
+            setError(true)
+            setMassageError(error.response.data.message)
+            console.log(error.response)
+           }
+        }else{
+          setMassageError("Please enter a valid email")
+            return
+        }
+      
+     
     };
     return (
   <>
 
   <section className="flex flex-col md:flex-row h-screen items-center">
-  <div className="bg-indigo-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
+  <div className="bg-indigo-600  lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
     <img
-      src="https://i.postimg.cc/rwTrJTsx/Ithra.png"
+      src="https://res.cloudinary.com/dr2baapqk/image/upload/v1701290083/Kingdom_Tower_bonxtf.jpg"
       alt=""
       className="w-full h-full object-cover"
     />
@@ -82,10 +85,26 @@ export default function LoginForm() {
       <h1 className="text-xl md:text-2xl font-bold leading-tight mt-12">
         Log in to your account
       </h1>
-      <form className="mt-6" action="#" method="POST">
+      {load ? (
+            // <div className="  z-40 left-[45%] top-[20%] ">
+             <div className="flex justify-center">
+                 <span class="loading"></span>
+             </div>
+          ) : (
+            ""
+          )}
+      <form onSubmit={handlerSubmit} className="mt-6" action="#" method="POST">
+      <div
+            className={` ${
+              error ? "block" : "hidden "
+            }  rounded-md bg-red-700 text-white p-2 left-[20%] bottom-[110%]`}
+          >
+            {massageError}
+          </div>
         <div>
           <label className="block text-gray-700">Email Address</label>
           <input
+            ref={email}
             type="email"
             name=""
             id=""
@@ -99,6 +118,7 @@ export default function LoginForm() {
         <div className="mt-4">
           <label className="block text-gray-700">Password</label>
           <input
+            ref={password}
             type="password"
             name=""
             id=""
@@ -118,8 +138,10 @@ export default function LoginForm() {
           </a>
         </div>
         <button
+          ref={button}
+       
           type="submit"
-          className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+          className="w-full block bg-[#230751] hover:bg-[#230751b6] focus:bg-indigo-400 text-white font-semibold rounded-lg
         px-4 py-3 mt-6"
         >
           Log In
@@ -129,9 +151,9 @@ export default function LoginForm() {
      
       <p className="mt-8">
         Need an account?{" "}
-        <a href="#" className="text-blue-500 hover:text-blue-700 font-semibold">
+        <Link to={"/register"} className="text-[#230751] hover:text-[#230751b6] font-semibold">
           Create an account
-        </a>
+        </Link>
       </p>
     </div>
   </div>

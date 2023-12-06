@@ -18,6 +18,8 @@
     "@material-tailwind/react": "^2.1.5",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
+    "flowbite": "^2.2.0",
+    "flowbite-react": "^0.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.18.0",

@@ -1,25 +1,33 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,useLoaderData} from "react-router-dom";
 import isAuth from ".././functions/IsAuth";
 import closeDialog from "../functions/CloseDialog";
 import closeIcon from "/closeIcon.png";
-import DropDownCountry from "../components/DropDownCountry";
+import DropDownCountry from "../components/DropDownCity";
 import country from "../functions/country";
 export default function Register() {
   const [error, setError] = useState("");
   const [pageClicked, setPageClicked] = useState(false);
-  const navigate = useNavigate();
-  const firstName = useRef();
-  const lastName = useRef();
+  const [load,setLoad]=useState(false)
 
+  
+  const [emailError,setEmailError]=useState("")
+  const [PasswordError,setPasswordError]=useState("")
+  const dataLoader=useLoaderData()
+  console.log(dataLoader)
+  const navigate = useNavigate();
+  const FullName = useRef();
+
+  const date=useRef()
   const email = useRef();
   const password = useRef();
   const passwordAgin = useRef();
+  const button=useRef()
 
   useEffect(() => {
     const asyncFn = async () => {
-      // const res = await isAuth();
+      const res = await isAuth();
       console.log(res);
       if (res.data.isAuth) {
         console.log("you are already login in");
@@ -29,49 +37,63 @@ export default function Register() {
     };
     asyncFn();
   }, []);
-  // const handlerSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const firstNameInput = firstName.current.value;
-  //   const lastNameInput = lastName.current.value;
-  //   console.log(email.current.value);
-  //   const emailInput = email.current.value;
-  //   const passwordInput = password.current.value;
-  //   const enterPassAgin = passwordAgin.current.value;
-  //   if (
-  //     !firstNameInput ||
-  //     !lastNameInput ||
-  //     !emailInput ||
-  //     !passwordInput ||
-  //     !passwordAgin
-  //   ) {
-  //     setError("Please fill all the fields");
-  //     return;
-  //   }
-  //   if (passwordInput !== enterPassAgin) {
-  //     setError("Password not match");
-  //     return;
-  //   }
-  //   console.log(import.meta.env.VITE_API);
-  //   axios.defaults.withCredentials = true;
-  //   axios
-  //     .post(`${import.meta.env.VITE_API}/user/register`, {
-  //       firstName: firstNameInput,
-  //       lastName: lastNameInput,
-  //       email: emailInput,
-  //       password: passwordInput,
-  //       passwordAgin: enterPassAgin,
-  //     })
-  //     .then((response) => {
-  //       setError("");
-  //       if (response.status === 201) {
-  //         navigate("/Login");
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-  const handlerSubmit=(e)=>{
+  useEffect(() => {
+    const handleLoad = () => {
+      // Perform actions after the component has fully loaded
+      setLoader(true)
+    };
+    window.addEventListener('load', handleLoad);
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
+  }, []);
+
+  const handlerSubmit=async (e)=>{
 e.preventDefault()
-console.log(e.target)
+button.current.classList.add("bg-[#230751b6]")
+
+const FullNameInput = FullName.current.value;
+const birthDate=date.current.value
+const emailInput = email.current.value;
+const passwordInput = password.current.value;
+const enterPassAgin = passwordAgin.current.value;
+
+const FullNameSanitized=FullNameInput.replace(/[^a-zA-Z\s\-]/g, '')
+const passwordInputSanitized=passwordInput.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
+const confirmPass=enterPassAgin.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
+const brithDateSanitized= birthDate.replace(/[^0-9\/\-]/g, '')
+const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+if(emailPattern.test(emailInput)){
+if(confirmPass===passwordInputSanitized){
+console.log(FullNameSanitized,passwordInputSanitized,confirmPass,brithDateSanitized,emailInput)
+try {
+  setLoad(true)
+  const res = await axios.post(`${import.meta.env.VITE_API}/user/register`, {
+    FullName: FullNameSanitized,
+    birthDate: brithDateSanitized,
+    email: emailInput,
+    password: passwordInputSanitized
+  })
+  if(res.status===201){
+    navigate("/login")
+  }
+  console.log(res)
+} catch (error) {
+  button.current.classList.remove("bg-[#230751b6]")
+  setLoad(false)
+
+  setError(true)
+  setEmailError(error.response.data.massage)
+  console.log(error.response)
+}
+}else{
+  setPasswordError("Password not match")
+  return
+}
+}else{
+  setEmailError("Please enter valid email")
+  return
+}
   }
 
   const handelClickPage = (e) => {
@@ -104,11 +126,27 @@ console.log(e.target)
             <h1 className="text-xl md:text-2xl font-bold leading-tight mt-12">
               Create your account to start new Adventure
             </h1>
+            {load ? (
+            // <div className="  z-40 left-[45%] top-[20%] ">
+             <div className="flex justify-center">
+                 <span class="loading"></span>
+             </div>
+          ) : (
+            ""
+          )}
             <form onSubmit={handlerSubmit} className="mt-6" action="#" method="POST">
+            <div
+            className={` ${
+              error ? "block" : "hidden "
+            }  rounded-md bg-red-700 text-white p-2 left-[20%] bottom-[110%]`}
+          >
+            {emailError}
+          </div>
               <div>
                 <label className="block text-gray-700">Full Name</label>
                 <input
-                  type="email"
+                ref={FullName}
+                  type="text"
                   name=""
                   id=""
                   placeholder="Enter Email Address"
@@ -121,6 +159,7 @@ console.log(e.target)
               <div>
                 <label className="block text-gray-700">Email Address</label>
                 <input
+                ref={email}
                   type="email"
                   name=""
                   id=""
@@ -131,10 +170,11 @@ console.log(e.target)
                   required=""
                 />
               </div>
-              <div className="flex justify-between gap-1">
-                <div className="w-[50%]">
+              <div className="flex justify-between ">
+                <div className="w-[100%]">
                   <label className="block text-gray-700">Date Of birth</label>
                   <input
+                  ref={date}
                     type="date"
                     name=""
                     id=""
@@ -142,39 +182,17 @@ console.log(e.target)
                     className="w-full px-4 py-3 rounded-lg mb-2 bg-[#FFFFFF] mt-2 border focus:border-blue-500
           focus:bg-white focus:outline-none"
                     required=""
+                    max={"2024-01-01"}
                   />
                 </div>
 
-                <div className="w-[50%]">
-                  <label className="block text-gray-700 mb-2">
-                    Confirm Password
-                  </label>
-                  <DropDownCountry pageClicked={pageClicked} reset={resetHandelClickPage}/>
-                  {/* <select data-te-select-init
-                     
-                    id="country"
-                    name="country"
-                    type="password"
-                    placeholder="Country"
-                    className="w-full px-4 py-3 rounded-lg mb-1 bg-[#FFFFFF] mt-2 border focus:border-blue-500
-  focus:bg-white focus:outline-none "
-                    required=""
-                  >
-                    {country.map((item, index) => {
-                    return <option key={index} value={item}>{item}</option>
-
-                    }
-                      
-                    )
-                    }
-                    
-                  </select> */}
-                </div>
+     
               </div>
-              <div className="flex justify-between">
-                <div className="w-[45%]">
+              <div className="flex justify-between gap-2">
+                <div className="w-[50%]">
                   <label className="block text-gray-700">Password</label>
                   <input
+                    ref={password}
                     type="password"
                     name=""
                     id=""
@@ -186,11 +204,12 @@ console.log(e.target)
                   />
                 </div>
 
-                <div className="w-[45%]">
+                <div className="w-[50%]">
                   <label className="block text-gray-700">
                     Confirm Password
                   </label>
                   <input
+                  ref={passwordAgin}
                     type="password"
                     name="ConfirmPassword"
                     id=""
@@ -203,23 +222,24 @@ console.log(e.target)
                 </div>
               </div>
               <button
+              ref={button}
                 type="submit"
-                className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+                className="w-full block bg-[#230751] hover:bg-[#230751b6] focus:bg-[#230751b6] text-white font-semibold rounded-lg
         px-4 py-3 mt-6"
               >
-                Log In
+                Register
               </button>
             </form>
             <hr className="my-6 border-gray-300 w-full" />
 
             <p className="mt-8">
               Already have an account?{" "}
-              <a
-                href="#"
-                className="text-blue-500 hover:text-blue-700 font-semibold"
+              <Link
+                to={"/login"}
+                className="text-[#230751b6] hover:text-[#230751b6] font-semibold"
               >
-                Create an account
-              </a>
+                Sing in
+              </Link>
             </p>
           </div>
         </div>

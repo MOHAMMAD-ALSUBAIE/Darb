@@ -1,4 +1,3 @@
-import { useState } from "react";
 export default function DropDown(props) {
     const title = props.title;
     console.log(props.widthXL)
@@ -17,17 +16,17 @@ export default function DropDown(props) {
 
 
   return (
-    <div  >
+    <div className="notInEnverimtent"  >
       <button
         id={props.title}
         data-dropdown-toggle="dropdownDefaultCheckbox"
-        className={" px-2  font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 flex justify-around items-center mt-1    h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border focus:border-[3px]  text-sm rounded-lg  focus:border-blue-500"+`md:[${props.widthXL}]`}
+        className={" notInEnverimtent px-2  font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 focus:ring-blue-500 focus:border-blue-500 flex justify-around items-center mt-1    h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border focus:border-[3px]  text-sm rounded-lg  "+`md:[${props.widthXL}]`}
         type="button"
         onClick={handelClick}
         
       >
         <img src={props.icon}/>
-        {props.placeHolder}{" "}
+          <p className="text-left">{props.placeHolder}</p>{" "}
         <svg
           className="w-2.5 h-2.5 ms-3 "
           aria-hidden="true"

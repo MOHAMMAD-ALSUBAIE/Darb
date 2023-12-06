@@ -15,8 +15,9 @@
    }
 
    .wrapper.active .content{
-    display: block;
-   }
+    visibility: visible;
+    margin-top: 60px;
+     }
 
  
    .wrapper.active .select-btn .angleDown{

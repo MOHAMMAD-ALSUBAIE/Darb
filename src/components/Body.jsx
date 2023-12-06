@@ -22,9 +22,7 @@ export default function Body(props) {
   //   props.handelTransform(false)
   // }
 
- function restDataOfClassifierImage(){
-    setDataOfClassifierImage(null)
- }
+
 
 //  if(props.close){
 //   restDataOfClassifierImage()
@@ -88,7 +86,7 @@ function handelClose(){
     position: "fixed"}} >       
     </div> 
    
-  <Card class={`${overflow?"block":"hidden"}`} close={handelClose} closeIcon={closeIcon} dataOfClassifierImage={dataOfClassifierImage} />
+  <Card class={`${overflow?"block":"hidden"}`} close={handelClose} loading={loading} closeIcon={closeIcon} dataOfClassifierImage={dataOfClassifierImage} />
 
       {/* <Conatiner> */}
       <section className="flex justify-between md:mx-[10%] 2xl:ml-[15%] md:flex-nowrap flex-wrap">

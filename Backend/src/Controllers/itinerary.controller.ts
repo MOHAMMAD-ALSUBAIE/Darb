@@ -5,19 +5,19 @@ const prisma = new PrismaClient();
 import axios from "axios";
 
 export const ItineraryRequest = async (req: any, res: any, next: any) => {
-  console.log(req.body);
+ try {
   let attractions = [];
   let restaurants = [];
   let shopping = [];
-  console.log(req.body)
-  const city=req.body.selectCity
+
+console.log(req.body)
+  const city=req.body.sanitizeCity.replace(/[^a-zA-Z\s\-]/g, '')
   const arrayData=req.body.arrayData
-  const startDate =new Date(req.body.date.startDate).getTime();
-  const endDate=new Date(req.body.date.endDate).getTime()
+  const startDate =new Date(req.body.date.sanitizeStartDate.replace(/[^0-9\/\-]/g, '')).getTime();
+  const endDate=new Date(req.body.date.sanitizeEndDate.replace(/[^0-9\/\-]/g, '')).getTime()
 
   const days= ((endDate-startDate)/(1000*60*60*24))+1
-  console.log(days);
-  console.log(arrayData);
+ 
   arrayData.forEach((curr) => {
     if (curr[0].includes("Attractions")) {
       attractions.push(curr[1]);
@@ -27,10 +27,8 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
       shopping.push(curr[1]);
     }
   });
-  console.log(attractions,restaurants,shopping);
 
-  //     const {Attractions,Restaurants,Shopping}=req.body
-  //     const {days,city}=req.body.parm
+
 
     const response= await  axios.post(`https://fastapi-production-c2d8.up.railway.app/itinerary?city=${city}&&days=${days}`,{
       attractions,
@@ -38,12 +36,11 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
       shopping
     })
     const itineraryArray=Object.values(response.data)
-    console.log(itineraryArray)
     const [itineraryDays,descriptionOFcity]=itineraryArray
-
+    const userID=req.session.userID||null
     const itinerariesTable= await prisma.itineraries.create({
       data:{
-          userID:null,
+          userID:userID,
             //@ts-ignore
 
             citydescription:descriptionOFcity
@@ -51,20 +48,17 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
 
     })
    const itineraryID=itinerariesTable.id
-
+   const itineraryDaysValues= Object.values(itineraryDays)
     //@ts-ignore
    for( const [key,value] of Object.entries(itineraryDays)){
         //@ts-ignore
-  // const values =value.map((element)=>{
-  //     return element.itineraryID=itineraryID
-  // })
+ 
         //@ts-ignore
 
     value.forEach(async (element) => {
-      console.log(element)
 
             //@ts-ignore
-      const itineraryTable= await prisma.Itinerary.create({
+      const itineraryTable= await prisma.itinerary.create({
                 //@ts-ignore
 
           data:{
@@ -84,18 +78,61 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
           // userID:itineraryID,
           }
 
-      //   include:{
-      //     where:{
-      //         Itineraries:{
-      //             id:itineraryID
-      //         }
-      //     }
-      //   }
+   
 
         })
     });
 
       }
 
-  return res.status(200).json({ id: itineraryID,itinerary:{itineraryDays,des:descriptionOFcity} });
+  return res.status(200).json({ id: itineraryID,itinerary:{"itineraryDays":itineraryDaysValues,"ItineraryDescription":descriptionOFcity,city:itineraryDaysValues[0][0].slugCity} });
+ } catch (error) {
+  res.status(500).json({ message: error.message });
+ }
 };
+
+export const getItinerary = async (req: any, res: any, next: any) => {
+  try {
+    const id=req.params.id
+    const Itineraries = await prisma.itineraries.findMany({
+       where:{
+        id:id,
+        
+       },
+       include:{
+        Itinerary:{
+          orderBy: {
+            day: "asc"
+          }
+        },
+       
+       },
+      
+    })
+
+    const ItinerariesDays=Itineraries[0].Itinerary
+    const citydescription=Itineraries[0].citydescription
+                 //@ts-ignore
+let finalArray={}
+    ItinerariesDays.forEach((element,i) => {
+      finalArray[element.day]=[]
+      ItinerariesDays.forEach((curr,index) => {
+        if(curr.day===element.day){
+          finalArray[element.day].push(curr)
+        // shallowCopyItinerariesDays.splice(i+1,1)
+        }
+      })
+      
+    });
+    const city=finalArray['Day 1'][0].slugCity
+
+    res.status(200).json({massage:"success",data:{finalArray,citydescription,city}});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+//upeer loop that go throght all elemments
+//insed this loop will be two things create new poroprt call day[number] 
+//and insed loop that check if active beloning the day in itiration or not if it belon add to array of day[number] the remove it

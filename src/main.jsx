@@ -10,27 +10,6 @@ import App from "./App.jsx";
 // import {AppContext} from "./components/ContextAPI/ContextApp"
 import "./index.css";
 
-
-// const router = createBrowserRouter([
-//     {
-//         path: "/",
-//         element: <LandingPage />,
-       
-//     },
-//     {
-//         path: "/Itinerary",
-//         element: <ItineraryPage />,
-//     },
-//     {
-//         path: "/Login",
-//         element: <Login />,
-//     },
-//     {
-//         path: "/Register",
-//         element: <Register />,
-//     },
-   
-// ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         {/* <AppContext.Provider value={{Itinerary:null}}> */}
