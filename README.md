@@ -32,7 +32,12 @@ npm install
 
 
 
-# Seed the database (if applicable)
+# Create an Environment File:
+
+# Duplicate the .env.example file and rename it to .env.
+# Review and update the environment variables in the newly created .env file. 
+
+# Run command
 npx prisma db push
 
 # Start the server
