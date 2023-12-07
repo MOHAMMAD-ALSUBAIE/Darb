@@ -10,7 +10,7 @@ Make sure you have the following installed:
 Clone the Repository
 
 git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb
-Client Setup
+#Client Setup
 # Navigate to the client directory
 cd DARB
 
@@ -20,7 +20,7 @@ npm install
 # Start the client
 npm run dev
 
-Server Setup
+#Server Setup
 
 # Navigate to the server directory
 cd Backend
