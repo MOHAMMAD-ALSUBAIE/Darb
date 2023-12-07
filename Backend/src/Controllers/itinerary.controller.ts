@@ -11,7 +11,7 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
   let shopping = [];
 
 console.log(req.body)
-  const city=req.body.sanitizeCity.replace(/[^a-zA-Z\s\-]/g, '')
+  const city=req.body.sanitizeCity.replace(/[^a-zA-Z\s\_]/g, '')
   const arrayData=req.body.arrayData
   const startDate =new Date(req.body.date.sanitizeStartDate.replace(/[^0-9\/\-]/g, '')).getTime();
   const endDate=new Date(req.body.date.sanitizeEndDate.replace(/[^0-9\/\-]/g, '')).getTime()
@@ -27,7 +27,10 @@ console.log(req.body)
       shopping.push(curr[1]);
     }
   });
-
+  console.log("before request moh api")
+  console.log( attractions,
+    restaurants,
+    shopping)
 
 
     const response= await  axios.post(`https://fastapi-production-c2d8.up.railway.app/itinerary?city=${city}&&days=${days}`,{
@@ -35,6 +38,10 @@ console.log(req.body)
       restaurants,
       shopping
     })
+    console.log("after request moh api")
+    console.log( attractions,
+      restaurants,
+      shopping)
     const itineraryArray=Object.values(response.data)
     const [itineraryDays,descriptionOFcity]=itineraryArray
     const userID=req.session.userID||null

@@ -80,40 +80,47 @@ export default function Form() {
   };
   const handelSubmit = async (e) => {
     e.preventDefault();
-    setActive({
-      options: false,
-      Attractions: false,
-      Restaurants: false,
-      Shopping: false,
+try {
+  setActive({
+    options: false,
+    Attractions: false,
+    Restaurants: false,
+    Shopping: false,
+  });
+  setLoad(true);
+
+  const formData = new FormData(e.target);
+  const arrayData = Array.from(formData);
+   const sanitizeStartDate=date?.startDate.replace(/[^0-9\/\-]/g, '')
+   const sanitizeEndDate=date?.endDate.replace(/[^0-9\/\-]/g, '')
+   const sanitizeCity=selectCity.replace(/[^a-zA-Z\s\_]/g, '')
+   console.log(selectCity)
+  let res;
+  console.log(date)
+  if (date?.startDate && date?.endDate && selectCity) {
+    res = await axios.post(`${import.meta.env.VITE_API}/API/itinerary`, {
+      arrayData,
+      sanitizeCity,
+      date:{sanitizeStartDate,sanitizeEndDate},
     });
-    setLoad(true);
+  } else {
+    setError(true);
+  }
 
-    const formData = new FormData(e.target);
-    const arrayData = Array.from(formData);
-     const sanitizeStartDate=date?.startDate.replace(/[^0-9\/\-]/g, '')
-     const sanitizeEndDate=date?.endDate.replace(/[^0-9\/\-]/g, '')
-     const sanitizeCity=selectCity.replace(/[^a-zA-Z\s\-]/g, '')
-    let res;
-    console.log(date)
-    if (date?.startDate && date?.endDate && selectCity) {
-      res = await axios.post(`${import.meta.env.VITE_API}/API/itinerary`, {
-        arrayData,
-        sanitizeCity,
-        date:{sanitizeStartDate,sanitizeEndDate},
-      });
-    } else {
-      setError(true);
-    }
+  console.log(res.data);
+  const   itinerary=res.data.itinerary
+    
+  setLoad(false);
 
-    console.log(res.data);
-    const   itinerary=res.data.itinerary
-      
+  // setItinerary(res.data.itinerary);
+  localStorage.setItem("Itinerary",JSON.stringify({ItineraryDays:itinerary.itineraryDays,ItineraryDescription:itinerary.ItineraryDescription,city:itinerary.city}))
+ console.log(res.data)
+ navigate(`/Itinerary/${res.data.id}`);
+} catch (error) {
     setLoad(false);
 
-    // setItinerary(res.data.itinerary);
-    localStorage.setItem("Itinerary",JSON.stringify({ItineraryDays:itinerary.itineraryDays,ItineraryDescription:itinerary.ItineraryDescription,city:itinerary.city}))
-   console.log(res.data)
-   navigate(`/Itinerary/${res.data.id}`);
+  console.log(error.response)
+}
   };
   const handelClickForm = (e) => {
     if (e.target.classList.contains("form")) {
