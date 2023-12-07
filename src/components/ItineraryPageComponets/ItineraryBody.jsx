@@ -87,7 +87,16 @@ const handelFavorite= async (e)=>{
     setLoader(true)
   }
   return (
-    <section  className={`${loader?"":"blur-lg"} justify-around flex max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-4`}>
+    
+    <section  className={`${loader?"":"blur-sm"} relative z-10 justify-around flex max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-4`}>
+       {!loader ? (
+            // <div className="  z-40 left-[45%] top-[20%] ">
+             <div className="flex absolute blur-none z-40 justify-center">
+                 <span class="loading"></span>
+             </div>
+          ) : (
+            ""
+          )}
       <div>
         <H1 class="text-[#230751] max-[600px]:w-[100%] mb-3 ">
         Enjoy Your <span>{city}</span> Journey

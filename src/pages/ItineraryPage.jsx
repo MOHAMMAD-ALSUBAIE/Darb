@@ -7,7 +7,6 @@ export default function ItineraryPage() {
     return (
     <>
     <Banner classCustomName="w-[100%] h-[350px]" />
-   
     <ItineraryBody />
 
     </>)

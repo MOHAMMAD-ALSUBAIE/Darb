@@ -1,7 +1,6 @@
 
 
 import "./DropDownCounter.css";
-import country from "../functions/country";
 import { useRef, useState, useEffect } from "react";
 export default function DropDownCity(props) {
   const [search, setSearch] = useState("");

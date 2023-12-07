@@ -4,8 +4,6 @@ import { Link, useNavigate ,useLoaderData} from "react-router-dom";
 import isAuth from ".././functions/IsAuth";
 import closeDialog from "../functions/CloseDialog";
 import closeIcon from "/closeIcon.png";
-import DropDownCountry from "../components/DropDownCity";
-import country from "../functions/country";
 export default function Register() {
   const [error, setError] = useState("");
   const [pageClicked, setPageClicked] = useState(false);
