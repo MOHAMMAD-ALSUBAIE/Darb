@@ -74,14 +74,12 @@ export default function FavoriteListPage(){
     
                             <input ref={id} type="hidden" value={curr.ItineraryID} />
                         <div className="   relative top-9   bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100  max-[600px]:w-[95%] mb-6">
-                        {/* <div className="w-[300px] h-fit "> */}
                         <div className="h-[240px]">
                         <img
-                        // onLoad={handlerLoader}
                         
                            className=" m-2    w-full rounded-t-lg  md:w-[300px] md:h-[230px] md:rounded-none md:rounded-l-lg "
                          src={favorite[1][i].bannerImage}
-                           alt={"bannerImage"}
+                           
                          />
                          <img className="absolute top-4 right-3" src={Favorite}/>
                         </div>
@@ -91,9 +89,7 @@ export default function FavoriteListPage(){
                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
                              {favorite[1][i].slugCity}
                            </h5>
-                           {/* <p className=" font-normal text-gray-700">
-                             {description}
-                           </p> */}
+                      
                            <div className="flex gap-2">
                            <button  className="bg-[#230751] hover:bg-[#230751b6] font-IBMPlexSans  mr-3 rounded-md text-[#fff] flex justify-center items-center gap-2 w-[148px] h-[40px]" target="_blank">Show Itinerary</button>
                            </div>
@@ -102,9 +98,7 @@ export default function FavoriteListPage(){
                        </div>
                        </form>
                     )
-                    // return <div>{curr.id}
-                    //   <img src={favorite[1][i].bannerImage}/>
-                    // </div>
+                  
                 })}
             </div>
         </section>
