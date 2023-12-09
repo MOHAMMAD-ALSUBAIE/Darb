@@ -1,8 +1,7 @@
 export default function DropDown(props) {
     const title = props.title;
-    console.log(props.widthXL)
+   
   const handelClick = () => {
-    console.log("clicked me", props.title, props.active[props.title]);
     props.clicked((prev) => {
       return {
         options: false,
@@ -20,13 +19,15 @@ export default function DropDown(props) {
       <button
         id={props.title}
         data-dropdown-toggle="dropdownDefaultCheckbox"
-        className={" notInEnverimtent px-2  font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 focus:ring-blue-500 focus:border-blue-500 flex justify-around items-center mt-1    h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border focus:border-[3px]  text-sm rounded-lg  "+`md:[${props.widthXL}]`}
+        className={" notInEnverimtent px-2  font-IBMPlexSans text-[16px] text-gray-700  border-gray-600 focus:ring-blue-500 focus:border-blue-500 flex  justify-between items-center mt-1    h-[44px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border focus:border-[3px]  text-sm rounded-lg  "+`md:${props.widthXL}`}
         type="button"
         onClick={handelClick}
         
       >
-        <img src={props.icon}/>
+      <div className="flex gap-3">
+      <img src={props.icon}/>
           <p className="text-left">{props.placeHolder}</p>{" "}
+      </div>
         <svg
           className="w-2.5 h-2.5 ms-3 "
           aria-hidden="true"
@@ -49,8 +50,8 @@ export default function DropDown(props) {
       
         id="dropdownDefaultCheckbox"
         className={`z-10 ${
-          props.active[props.title] ? `visible ${props.classNameCustom}` : "invisible top-0"
-        } w-48 bg-white divide-y duration-200 top-0 divide-gray-100 transition-all rounded-lg shadow absolute   xl:w-[230px] md:w-[140px]  min-[390px]:w-[350px]  min-[375px]:w-[375px]`}
+          props.active[props.title] ? `visible ${props.classNameCustom}  ` : "invisible top-0"
+        } w-48 bg-white divide-y duration-200 top-0 divide-gray-100 transition-all rounded-lg shadow absolute   md:${props.widthXL}   min-[390px]:w-[350px]  min-[375px]:w-[375px]`}
       >
         <ul
            
@@ -67,9 +68,7 @@ export default function DropDown(props) {
                   name={props.title + "-" + id}
                   value={attraction}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  onChange={(e) => {
-                    console.log(e.currentTarget);
-                  }}
+                 
                 />
                 <label
                   htmlFor={attraction}

@@ -1,10 +1,8 @@
 
-import almasmak from "/almasmak-fortress.png";
 
-const ActivityCard = ({name, description, location, slugCategoryPOI, slugCity, bannerImage,handlerLoader}) => {
+const ActivityCard = ({name, description, location,keyIndex,bannerImage,handlerLoader}) => {
     return (
-        <div className="flex flex-col  relative top-9   bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 w-[3000px]  max-[600px]:w-[95%] mb-6">
-       {/* <div className="w-[300px] h-fit "> */}
+        <div key={keyIndex} className="flex flex-col  relative top-9   bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 w-[3000px]  max-[600px]:w-[95%] mb-6">
        <img
        onLoad={handlerLoader}
        style={{height:"inherit"}}

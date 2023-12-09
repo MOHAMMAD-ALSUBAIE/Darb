@@ -7,7 +7,6 @@ import cors from 'cors'
 import expressSession from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import  { PrismaClient } from '@prisma/client';
-import fs from 'fs';
 
 dotenv.config({ path: "./.env" });
 const port=process.env.port||3000

@@ -2,18 +2,18 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate ,useLoaderData} from "react-router-dom";
 import isAuth from ".././functions/IsAuth";
-import closeDialog from "../functions/CloseDialog";
-import closeIcon from "/closeIcon.png";
+import {onSubmit,afterSubmit} from "../functions/SubmitBG"
+
+
 export default function Register() {
   const [error, setError] = useState("");
   const [pageClicked, setPageClicked] = useState(false);
   const [load,setLoad]=useState(false)
-
-  
+ 
+  const [massageError,setMassageError]=useState("")
   const [emailError,setEmailError]=useState("")
   const [PasswordError,setPasswordError]=useState("")
   const dataLoader=useLoaderData()
-  console.log(dataLoader)
   const navigate = useNavigate();
   const FullName = useRef();
 
@@ -35,35 +35,31 @@ export default function Register() {
     };
     asyncFn();
   }, []);
-  useEffect(() => {
-    const handleLoad = () => {
-      // Perform actions after the component has fully loaded
-      setLoader(true)
-    };
-    window.addEventListener('load', handleLoad);
-    return () => {
-      window.removeEventListener('load', handleLoad);
-    };
-  }, []);
 
   const handlerSubmit=async (e)=>{
 e.preventDefault()
-button.current.classList.add("bg-[#230751b6]")
-
-const FullNameInput = FullName.current.value;
+onSubmit(button)//change the submit button color
+const passwordPattern=/[^a-zA-Z0-9@#$%^&+=]/g
+const FullNameInput = FullName.current.value.trim();
 const birthDate=date.current.value
-const emailInput = email.current.value;
-const passwordInput = password.current.value;
-const enterPassAgin = passwordAgin.current.value;
+const emailInput = email.current.value.trim();
+const passwordInput = password.current.value.trim();
+const enterPassAgin = passwordAgin.current.value.trim();
+
+
+if(!FullNameInput||!birthDate||!emailInput||!passwordInput||!enterPassAgin){
+  setMassageError("Please fill all fields!")
+  afterSubmit(button) //return the button to original color
+  return
+}
 
 const FullNameSanitized=FullNameInput.replace(/[^a-zA-Z\s\-]/g, '')
-const passwordInputSanitized=passwordInput.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
-const confirmPass=enterPassAgin.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
+const passwordInputSanitized=passwordInput.replace(passwordPattern, '')
+const confirmPass=enterPassAgin.replace(passwordPattern, '')
 const brithDateSanitized= birthDate.replace(/[^0-9\/\-]/g, '')
 const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 if(emailPattern.test(emailInput)){
 if(confirmPass===passwordInputSanitized){
-console.log(FullNameSanitized,passwordInputSanitized,confirmPass,brithDateSanitized,emailInput)
 try {
   setLoad(true)
   const res = await axios.post(`${import.meta.env.VITE_API}/user/register`, {
@@ -75,29 +71,29 @@ try {
   if(res.status===201){
     navigate("/login")
   }
-  console.log(res)
 } catch (error) {
-  button.current.classList.remove("bg-[#230751b6]")
+  afterSubmit(button) //return the button to original color
   setLoad(false)
 
   setError(true)
-  setEmailError(error.response.data.massage)
-  console.log(error.response)
+  setMassageError(error.response.data.massage)
 }
 }else{
-  setPasswordError("Password not match")
+  afterSubmit(button) //return the button to original color
+
+  setMassageError("Password not match")
   return
 }
 }else{
-  setEmailError("Please enter valid email")
+  afterSubmit(button) //return the button to original color
+
+  setMassageError("Please enter valid email")
   return
 }
   }
 
   const handelClickPage = (e) => {
-    console.log(e.target.classList)
 
-   // console.log(e.target.classList.contains("dropdown"))
     if(!e.target.classList.contains("dropdown")) {
       setPageClicked(true)
 
@@ -125,7 +121,6 @@ try {
               Create your account to start new Adventure
             </h1>
             {load ? (
-            // <div className="  z-40 left-[45%] top-[20%] ">
              <div className="flex justify-center">
                  <span class="loading"></span>
              </div>
@@ -138,7 +133,7 @@ try {
               error ? "block" : "hidden "
             }  rounded-md bg-red-700 text-white p-2 left-[20%] bottom-[110%]`}
           >
-            {emailError}
+            {massageError}
           </div>
               <div>
                 <label className="block text-gray-700">Full Name</label>
@@ -222,7 +217,7 @@ try {
               <button
               ref={button}
                 type="submit"
-                className="w-full block bg-[#230751] hover:bg-[#230751b6] focus:bg-[#230751b6] text-white font-semibold rounded-lg
+                className="w-full block bg-[#230751] hover:bg-[#230751b6]  text-white font-semibold rounded-lg
         px-4 py-3 mt-6"
               >
                 Register

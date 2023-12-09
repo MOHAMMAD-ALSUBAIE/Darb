@@ -22,16 +22,12 @@ export default function FavoriteListPage(){
          try {
             setLoad(true)
             const res =  await isAuth()
-            console.log(res);
             if (res.data.isAuth) {
-                console.log("you are already login in");
                 setIsAuthState(true)
                 
                 const response=await axios.get(`${import.meta.env.VITE_API}/user/FavoriteList`)
                 setLoad(false)
-                console.log(response.data)
                 setFavorite([response.data.data,response.data.itineraries])
-                console.log(response.data.data,response.data.itineraries)
 
             } 
          } catch (error) {
@@ -47,10 +43,13 @@ export default function FavoriteListPage(){
       },[])
 
       const handleSubmit=(e)=>{
+        e.preventDefault()
+
         const sanitizedID=id.current.value.replace(/[^a-zA-Z0-9@#$%^&+=-]/g, '')
-        //console.log(sanitizedID)
-        e.preventDefault
-        navigate(`/itinerary/${sanitizedID}`)
+        if(isAuthState){
+          navigate(`/itinerary/${sanitizedID}`)
+
+        }
       }
     return(
       <>
@@ -59,18 +58,17 @@ export default function FavoriteListPage(){
         </header>
         <section className="text-[#230751]   max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-[60px]">
         {load ? (
-            // <div className="  z-40 left-[45%] top-[20%] ">
              <div className="flex justify-center">
-                 <span class="loading"></span>
+                 <span className="loading"></span>
          </div>
           ) : (
             ""
           )}
             <H1>Your Favorite Itinerary</H1>
-            <div className="flex gap-10 max-[600px]:flex-wrap">
+            <div className="flex flex-wrap gap-10 max-[600px]:flex-wrap">
                 {favorite[0]?.map((curr,i)=>{
                     return (
-                        <form onSubmit={handleSubmit}>
+                        <form key={i} onSubmit={handleSubmit}>
     
                             <input ref={id} type="hidden" value={curr.ItineraryID} />
                         <div className="   relative top-9   bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100  max-[600px]:w-[95%] mb-6">

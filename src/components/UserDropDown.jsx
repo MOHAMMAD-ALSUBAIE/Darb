@@ -101,7 +101,7 @@ export default function UserDropDown(){
   </div>
   {load ? (
             // <div className="  z-40 left-[45%] top-[20%] ">
-             <div className="flex justify-center">
+             <div className="flex absolute top-[60px] right-7 z-40 justify-center">
                  <span class="loading"></span>
              </div>
           ) : (

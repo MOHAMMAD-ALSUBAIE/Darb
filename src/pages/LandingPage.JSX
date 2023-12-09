@@ -18,9 +18,7 @@ export default function LandingPage() {
     const asyncFn = async () => {
 
         const res =  await isAuth()
-        console.log(res);
         if (res.data.isAuth) {
-            console.log("you are already login in");
             setIsAuthState(true)
         } else {
         }
@@ -41,11 +39,7 @@ export default function LandingPage() {
 
   
 
-    // function handelClose(){
-        
-    //     setClose(true)
-    //     console.log(transparentBackground)
-    // }
+ 
     return (
         <LandingPageContext.Provider value={{isAuthState,setIsAuthState}}>
 

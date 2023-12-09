@@ -4,7 +4,6 @@ export default function Circles() {
     return <div className="flex items-center justify-center">
        <div className=" opacity-[.15] rounded-full md:w-[678px] md:h-[678px]  w-[428px] h-[428px] min-[414px]:w-[414px] min-[414px]:h-[414px] min-[390px]:h-[390px] min-[390px]:w-[390px]    min-[375px]:h-[375px] min-[375px]:w-[375px] min-[430px]:w-[430px] min-[430px]:h-[430px]  bg-[#713D91] z-0 ">
        
-{/* w-[356px] h-[356px] min-[390px]:w-[330px] min-[390px]:h-[330px] min-[414px]:w-[330px] min-[414px]:h-[330px] min-[375px]:h-[300px] min-[375px]:w-[300px]  */}
     </div>
     <div className=" opacity-[.15] absolute  rounded-full md:w-[576px] md:h-[576px]  bg-[#713D91] w-[356px] h-[356px] min-[390px]:w-[330px] min-[390px]:h-[330px] min-[414px]:w-[330px] min-[414px]:h-[330px] min-[375px]:h-[300px] min-[375px]:w-[300px] z-20 ">
           

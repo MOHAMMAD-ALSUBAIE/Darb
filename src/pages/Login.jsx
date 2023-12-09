@@ -2,9 +2,8 @@ import { useRef, useEffect ,useState} from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import isAuth from ".././functions/IsAuth";
-import closeIcon from "/closeIcon.png"
-import closeDialog from "../functions/CloseDialog";
-import { button } from "@material-tailwind/react";
+import {onSubmit,afterSubmit} from "../functions/SubmitBG"
+
 export default function LoginForm() {
   const [error,setError]=useState(false)
   const [massageError,setMassageError]=useState("")
@@ -20,7 +19,6 @@ export default function LoginForm() {
              try {
               const res = await isAuth()
               if (res.data.isAuth) {
-                  console.log("you are already login in");
                   navigate("/");
               } 
              } catch (error) {
@@ -33,11 +31,18 @@ export default function LoginForm() {
     }, []);
     const handlerSubmit = async (event) => {
         event.preventDefault();
-        button.current.classList.add("bg-[#230751b6]")
-        const emailInput = email.current.value;
-        const passwordInput = password.current.value;
+        onSubmit(button)//change the submit button color
+        const emailInput = email.current.value.trim();
+        const passwordInput = password.current.value.trim();
         const passwordInputSanitized=passwordInput.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '')
         const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+        if(!emailInput||!passwordInput){
+          setMassageError("Please fill all fields!")
+          afterSubmit(button) //return the button to original color
+          return
+        }
+
         if(emailPattern.test(emailInput)){
            try {
             axios.defaults.withCredentials = true;
@@ -53,6 +58,7 @@ export default function LoginForm() {
             }
            } catch (error) {
             button.current.classList.remove("bg-[#230751b6]")
+            afterSubmit(button) //return the button to original color
 
             setLoad(false)
             setError(true)
@@ -61,6 +67,8 @@ export default function LoginForm() {
            }
         }else{
           setMassageError("Please enter a valid email")
+          afterSubmit(button) //return the button to original color
+
             return
         }
       
@@ -86,7 +94,6 @@ export default function LoginForm() {
         Log in to your account
       </h1>
       {load ? (
-            // <div className="  z-40 left-[45%] top-[20%] ">
              <div className="flex justify-center">
                  <span class="loading"></span>
              </div>

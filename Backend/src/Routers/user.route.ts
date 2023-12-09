@@ -5,6 +5,5 @@ userRouter.post("/register", createUser);
 
  userRouter.post("/addFavorite", addFavorite);
 userRouter.get('/FavoriteList', getFavoriteList)
-// userRouter.delete('/FavoriteList/:bookID', deleteFromFavoriteList)
 userRouter.delete("/logout",logout)
 export default userRouter

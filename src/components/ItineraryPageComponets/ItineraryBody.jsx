@@ -22,6 +22,14 @@ export default function ItineraryBody() {
 const url=useRef()
     let {id}= useParams();
     let res
+
+    useEffect(()=>{
+      if(copied===true){
+        setTimeout(() => {
+          setCopied(false)
+        }, 3000);
+      }
+    },[copied])
       useEffect(()=>{
         if(localStorage.getItem("Itinerary")){
           const Itinerary=JSON.parse(localStorage.getItem("Itinerary"))
@@ -60,7 +68,6 @@ const handelFavorite= async (e)=>{
         id
       })
 
-      console.log(response)
     }
   } catch (error) {
     const status=error.response.data.status
@@ -90,18 +97,17 @@ const handelFavorite= async (e)=>{
     
     <section  className={`${loader?"":"blur-sm"} relative z-10 justify-around flex max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-4`}>
        {!loader ? (
-            // <div className="  z-40 left-[45%] top-[20%] ">
              <div className="flex absolute blur-none z-40 justify-center">
-                 <span class="loading"></span>
+                 <span className="loading"></span>
              </div>
           ) : (
             ""
           )}
       <div>
-        <H1 class="text-[#230751] max-[600px]:w-[100%] mb-3 ">
+        <H1 classCustomName="text-[#230751] max-[600px]:w-[100%] mb-3 ">
         Enjoy Your <span>{city}</span> Journey
         </H1>
-        <p class="text-[#012C41] tracking-wider font-IBMPlexSans md:w-[95%] max-[600px]:w-[100%] max-[600px]:text-[20px]">
+        <p classCustomName="text-[#012C41] tracking-wider font-IBMPlexSans md:w-[95%] max-[600px]:w-[100%] max-[600px]:text-[20px]">
           {ItineraryDescription}
         </p>
         {/* Itinerary Schedule cards */}
@@ -110,15 +116,15 @@ const handelFavorite= async (e)=>{
           <div className="flex flex-col">
             {ItineraryDays.map((curr,index) => {
               return (
-                <div className="flex mb-[100px] ">
+                <div key={index} className="flex mb-[100px] ">
                   <div className="relative bottom-[50px]">
                     <H1>Day { index +1}</H1>
                     <div className=" relative left-[30%] h-[100%]">
                       <div className="border-l-4 border-black h-[100%] absolute"></div>
                       <div className=" flex flex-col justify-between h-[100%] ">
-                        {curr.map((curr) => {
+                        {curr.map((curr,i) => {
                           return (
-                            <div className="bg-[#000000] h-[15px] w-[15px] rounded-full relative right-[5%]"></div>
+                            <div key={i} className="bg-[#000000] h-[15px] w-[15px] rounded-full relative right-[5%]"></div>
                           );
                         })}
                         <div className="bg-[#000000] h-[15px] w-[15px] rounded-full relative right-[5%]"></div>
@@ -127,8 +133,8 @@ const handelFavorite= async (e)=>{
                   </div>
 
                   <div>
-                    {curr.map((curr) => {
-                      return <ActivityCard onLoad={handlerLoad} name={curr.name} description={curr.description} location={curr.location} slugCategoryPOI={curr.slugCategoryPOI} slugCity={curr.slugCity} bannerImage={ curr.bannerImage} />;
+                    {curr.map((curr ,i) => {
+                      return <ActivityCard keyIndex={i} onLoad={handlerLoad} name={curr.name} description={curr.description} location={curr.location} slugCategoryPOI={curr.slugCategoryPOI} slugCity={curr.slugCity} bannerImage={ curr.bannerImage} />;
                     })}
                   </div>
                 </div>
@@ -144,7 +150,7 @@ const handelFavorite= async (e)=>{
           <img
             src={favorite}
             className="w-[14px] h-[14px] self-center"
-            alt="share"
+            
           />
         </button>
         <input type="hidden" value={id}/>
@@ -152,10 +158,9 @@ const handelFavorite= async (e)=>{
         <div>
         <ItineraryButton onClick={handelShareButton}>
           <p>Share Itinerary</p>
-          <img src={Share} alt="share" className="w-[13.33px] h-[16.36px]" />
-          {/* <div className=" relative top-7 bg-slate-300 w-fit h-[40px]">Itinerary/951f942d-a0ed-4154-bc97-91d2cf28b179</div> */}
+          <img src={Share}  className="w-[13.33px] h-[16.36px]" />
         </ItineraryButton>
-          <div className={`bg-[#ffffff] ${visibleCopyCompont?"visible mt-4":"invisible"} shadow-xl transition-all duration-300 h-[100px] p-2 mt-1 rounded-md flex items-center gap-4 absolute right-7`}>
+          <div className={`bg-[#ffffff] ${visibleCopyCompont?"visible mt-4":"invisible"} shadow-xl transition-all duration-300 h-[100px] p-2 mt-1 rounded-md flex items-center gap-4 absolute right-2`}>
             <input ref={url} className="h-[50px] rounded-md" type="text" value={window.location.href}></input>
             <button className={`${copied?"bg-slate-500":"bg-[#230751] hover:bg-[#230751b6]"}  font-IBMPlexSans  rounded-md text-[#fff] flex justify-center items-center gap-2 w-[148px] h-[40px]`} onClick={handelCopy}>{copied?"copied":"copy"}</button>
           </div>

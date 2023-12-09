@@ -72,7 +72,6 @@ export default function Form() {
     setActive(actving);
   };
   const handelDateValue = (newValue) => {
-    console.log(newValue);
     setDate(newValue);
   };
   const handelSelectCity = (city) => {
@@ -91,12 +90,11 @@ try {
 
   const formData = new FormData(e.target);
   const arrayData = Array.from(formData);
-   const sanitizeStartDate=date?.startDate.replace(/[^0-9\/\-]/g, '')
-   const sanitizeEndDate=date?.endDate.replace(/[^0-9\/\-]/g, '')
+  const datePattern=/[^0-9\/\-]/g
+   const sanitizeStartDate=date?.startDate.replace(datePattern, '')
+   const sanitizeEndDate=date?.endDate.replace(datePattern, '')
    const sanitizeCity=selectCity.replace(/[^a-zA-Z\s\_]/g, '')
-   console.log(selectCity)
   let res;
-  console.log(date)
   if (date?.startDate && date?.endDate && selectCity) {
     res = await axios.post(`${import.meta.env.VITE_API}/API/itinerary`, {
       arrayData,
@@ -107,19 +105,15 @@ try {
     setError(true);
   }
 
-  console.log(res.data);
   const   itinerary=res.data.itinerary
     
   setLoad(false);
 
-  // setItinerary(res.data.itinerary);
   localStorage.setItem("Itinerary",JSON.stringify({ItineraryDays:itinerary.itineraryDays,ItineraryDescription:itinerary.ItineraryDescription,city:itinerary.city}))
- console.log(res.data)
  navigate(`/Itinerary/${res.data.id}`);
 } catch (error) {
     setLoad(false);
 
-  console.log(error.response)
 }
   };
   const handelClickForm = (e) => {
@@ -140,7 +134,6 @@ try {
         <form
           onClick={handelClickForm}
           id="forma"
-          //  onClick={handelClickForm}
           onSubmit={handelSubmit}
           className="form closeHoverIn border rounded-2xl md:ml-0 bg-white  relative mt-[40px] md:top-[-305px] top-[-102px] z-1  border-[#AFB5B5]  min-[1900px]:w-[70%] min-[1750px]:w-[80%] xl:w-[90%] min-[414px]:ml-4 min-[390px]:ml-1 min-[430px]:ml-6 min-[390px]:w-[380px]"
         >
@@ -154,7 +147,7 @@ try {
           </div>
           {load ? (
                <div className="flex justify-center absolute z-40 left-[45%] top-[20%]">
-                 <span class="loading"></span>
+                 <span className="loading"></span>
              </div>
          
           ) : (
@@ -166,7 +159,6 @@ try {
               id="formDiv"
               className=" form flex items-center gap-8 mb-[15px] flex-wrap md:justify-start justify-center"
             >
-              {/* <DropDown tags={cities} title="Destination" /> */}
               <div>
                 <label className="relative top-1 font-IBMPlexSans font-bold">
                   Destination
@@ -183,7 +175,7 @@ try {
                   width="200px"
                   icon={locationIcon}
                   placeHolder="E.g.,Riyadh, Dammam"
-                  customClassName="border border-1 focus:border-blue-500 border-gray-600 rounded-lg h-[44px] xl:w-[230px] md:w-[140px]  w-[400px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 "
+                  customClassName="border border-1 focus:border-[3px] focus:border-blue-500 border-gray-600 rounded-lg h-[44px] xl:w-[230px] md:w-[140px]  w-[400px] min-[390px]:w-[350px]  min-[375px]:w-[375px] bg-[#fff] border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 "
                 />
               </div>
               <DateRange handelDateValue={handelDateValue} />
@@ -210,7 +202,7 @@ try {
                 </label>
 
                 <DropDown
-                  classNameCustom={"top-[10.5rem]"}
+                  classNameCustom={"top-[10.5rem] "}
                   clicked={handelActive}
                   active={active}
                   tags={Restaurants}

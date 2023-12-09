@@ -12,11 +12,12 @@ import bcrypt from "bcrypt";
 
 export const createUser = async (req: any, res: any) => {
   try {
-    console.log(req.body);
     const { FullName, email, birthDate, password } = req.body;
+   
+    const passwordPattern=/[^a-zA-Z0-9@#$%^&+=]/g
     const FullNameSanitized = FullName.replace(/[^a-zA-Z\s\-]/g, "");
-    const passwordInputSanitized = password.replace(
-      /[^a-zA-Z0-9@#$%^&+=]/g,
+    const passwordInputSanitized = password.replace(passwordPattern
+      ,
       ""
     );
     const brithDateSanitized = birthDate.replace(/[^0-9\/\-]/g, "");
@@ -25,22 +26,17 @@ export const createUser = async (req: any, res: any) => {
       return res.status(400).json({ error: "Name and email are required" });
     }
     if (!emailPattern.test(email)) {
-      return res.status(400).json({ error: " email are required" });
+      return res.status(400).json({ error: "Email must be valid" });
     }
-    const checkUseEmail = await userPrisma.findFirst({
+    const checkUseEmail = await userPrisma.findUnique({
       where: {
         email: email,
       },
     });
-    console.log(checkUseEmail)
     if (checkUseEmail) {
-      return res.status(422).json({ massage: "email already exist" });
+      return res.status(422).json({ massage: "Email already exist" });
     }
-    // if(password!=passwordAgin){
-    //     return res
-    //     .status(400)
-    //     .json({ error: "password not match" });
-    // }
+ 
     const hashedPassword = await bcrypt.hash(passwordInputSanitized, 10);
     const response = await userPrisma.create({
       data: {
@@ -54,7 +50,6 @@ export const createUser = async (req: any, res: any) => {
         Password: hashedPassword,
       },
     });
-console.log(response)
     res.status(201).json({
       message: "User has be created, move him to login page.",
       response:response,
@@ -82,7 +77,6 @@ export const addFavorite = async (req: any, res: any) => {
             ItineraryID: itineraryID,
         },
     })
-    console.log(response)
     res.status(201).json({
       message: "Itinerary had be added to favorite list.",
       status: 201,
@@ -124,8 +118,6 @@ export const getFavoriteList = async (req: any, res: any) => {
  
   })
  
-  const ItineraryID= favoritestResponse[0].ItineraryID
-  console.log(favoritestResponse)
   const itinerariesArray = await Promise.all(
     favoritestResponse.map(async (curr) => {
       const itineraries = await prisma.itinerary.findFirst({
@@ -138,10 +130,8 @@ export const getFavoriteList = async (req: any, res: any) => {
     })
   );
   
-  console.log(itinerariesArray);
     res.status(200).json({ status: 200, data:favoritestResponse, itineraries: itinerariesArray});
   } catch (e) {
-    console.log(e.name);
     if (e.status === 401)
       res.status(401).json({ status: 401, massage: e.message });
     else res.status(400).json({ status: 400, massage: "filed" });

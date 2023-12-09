@@ -3,21 +3,14 @@
 import "./DropDownCounter.css";
 import { useRef, useState, useEffect } from "react";
 export default function DropDownCity(props) {
-  const [search, setSearch] = useState("");
-  // const [active, setActive] = useState(false);
   const [selectCountry, setSelectCountry] = useState("");
   const wrapper = useRef("");
   useEffect(() => {
-    const state = props.pageClicked;
     
       wrapper.current.classList.remove("active");
-      // props.reset
     
   }, [props.pageClicked]);
-  // const handelSearchChange = (e) => {
-  //   setSearch(e.target.value);
-  //   setFindTheSearch("");
-  // };
+ 
   const handlerSelectCounter = (e) => {
     props.selectCity(e.target.id); //content the name of counter
     setSelectCountry(e.target.id);
@@ -45,7 +38,6 @@ export default function DropDownCity(props) {
         className={`notInEnverimtent font-IBMPlexSans flex justify-between dropdown ${props.customClassName} ${
           props.active.options ? "active" : ""
         } wrapper w-[${props.width}]  relative z-50 top-1`}
-        // className=" focus:ring-blue-500 border-2 focus:border-blue-500 dropdown select-btn  mt-3 flex cursor-pointer   bg-[#FFFFFF]  py-0 px-[20px] rounded-[7px] text-[14px] items-center justify-between "
       >
         <span className="dropdown flex items-center gap-1">
           <img src={props.icon} className="h-4 w-4" />
@@ -88,22 +80,3 @@ export default function DropDownCity(props) {
     </>
   );
 }
-// import { Dropdown } from 'primereact/dropdown';
-
-// export default function DropDownCity() {
-//     const [selectedCity, setSelectedCity] = useState(null);
-//     const cities = [
-//         { name: 'New York', code: 'NY' },
-//         { name: 'Rome', code: 'RM' },
-//         { name: 'London', code: 'LDN' },
-//         { name: 'Istanbul', code: 'IST' },
-//         { name: 'Paris', code: 'PRS' }
-//     ];
-
-//     return (
-//         <div className="card flex justify-content-center border-3 border-cyan-500">
-//             <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
-//                 placeholder="Select a City" className="w-full md:w-14rem border-3 border-cyan-500" />
-//         </div>
-//     )
-// }

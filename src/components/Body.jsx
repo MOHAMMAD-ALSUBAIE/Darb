@@ -16,20 +16,9 @@ export default function Body(props) {
   const [dataOfClassifierImage, setDataOfClassifierImage] = useState({});
   const [overflow, setOverflow] = useState(false);
   const [loading, setLoading] = useState(false);
-  // if(dataOfClassifierImage){
-  //   props.handelTransform(true,dataOfClassifierImage)
-  // }else{
-  //   props.handelTransform(false)
-  // }
 
-
-
-//  if(props.close){
-//   restDataOfClassifierImage()
-//  }
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     setImageFile(file);
   };
 
@@ -57,7 +46,6 @@ export default function Body(props) {
 
 
     setDataOfClassifierImage(data);
-    console.log(dataOfClassifierImage)
     setOverflow(true)
     setLoading(false)
     } catch (e) {
@@ -72,10 +60,7 @@ function handelClose(){
   return (
     <>
    
-    {/* {dataOfClassifierImage? <Card dataOfClassifierImage={dataOfClassifierImage} closeIcon={closeIcon}/>
- :undefined} */}
-            {/* <div className=" absolute z-20 w-[100vw] h-[100vh] bg-black opacity-90"></div> */}
-
+ 
     <div className="bg-[#0F0839] md:mt-0 mt-9 relative z-1   text-[#fff]">
      <div className={`${overflow?"block":"hidden"} fixed z-30 bg-black opacity-90`} style={ { width: "100vw",
     height: "100vh",
@@ -86,17 +71,17 @@ function handelClose(){
     position: "fixed"}} >       
     </div> 
    
-  <Card class={`${overflow?"block":"hidden"}`} close={handelClose} loading={loading} closeIcon={closeIcon} dataOfClassifierImage={dataOfClassifierImage} />
+  <Card ClassNameCustom={`${overflow?"block":"hidden"}`} close={handelClose} loading={loading} closeIcon={closeIcon} dataOfClassifierImage={dataOfClassifierImage} />
 
       {/* <Conatiner> */}
       <section className="flex justify-between md:mx-[10%] 2xl:ml-[15%] md:flex-nowrap flex-wrap">
         <div className="pt-[80px] pb-[80px] md:w-[70%] w-[100%] flex flex-col md:items-start items-center">
           {/* content */}
           <div className=" md:mt-0 mt-[50px]">
-            <H1 class="py-[50px]  text-[#fff] ">
+            <H1 ClassNameCustom="py-[50px]  text-[#fff] ">
               Darb's Landmark Explorer
             </H1>
-            <H2 class="text-[#fff] ">
+            <H2 ClassNameCustom="text-[#fff] ">
             Capture a Saudi Landmark 📸
               <br className="mb-4 " />
               and Instantly Unlock AI-Driven
@@ -127,7 +112,7 @@ function handelClose(){
 
             <form onSubmit={handlePredict}>
               <Button
-                class="flex mt-4 rounded-lg bg-[#9A9A9A] w-[196px] items-center justify-center h-[40px]"
+                ClassNameCustom="flex mt-4 rounded-lg bg-[#9A9A9A] w-[196px] items-center justify-center h-[40px]"
                 type="submit"
               >
                 Recognize Landmark
@@ -137,16 +122,15 @@ function handelClose(){
                   alt="iconArrow"
                 />
               </Button>
-              <span class={`loader ${loading?"block":"hidden"} top-[15.4px]  `}></span>
+              <span className={`loader ${loading?"block":"hidden"} top-[15.4px]  `}></span>
             </form>
           </div>
         </div>
-        {/* max-[600px]:w-[100%] */}
         <div className="py-9 relative md:bottom-0 bottom-[100px] z-0 flex justify-center max-[600px]:w-[100%] ">
           <Circles />
         </div>
       </section>
-      {/* </Conatiner> */}
+   
     </div>
     </>
   );
