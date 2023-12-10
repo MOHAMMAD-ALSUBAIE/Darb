@@ -22,7 +22,7 @@ declare module "express-session" {
 app.use(express.json());
 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: ["https://darb-ai-la9o.vercel.app"],
   methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
   credentials: true,
 }))
