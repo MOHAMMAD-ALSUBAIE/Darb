@@ -9,7 +9,7 @@ Make sure you have the following installed:
     npm (Node Package Manager)
 Clone the Repository
 
-git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb
+git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb-AI.git
 #Client Setup
 # Navigate to the client directory
 cd DARB
