@@ -9,7 +9,7 @@ import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import  { PrismaClient } from '@prisma/client';
 
 dotenv.config({ path: "./.env" });
-const port=process.env.port||3000
+const port=process.env.PORT||3000
 const app= express()
 declare module "express-session" {
   interface SessionData {
@@ -53,7 +53,9 @@ app.use(
 );
 
 
-
+app.get("/",(req,res)=>{
+res.status(200).json("server is running")
+})
 app.use("/API",Route)
 app.use("/user/",RouterInstance,userRoute)
 

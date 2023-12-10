@@ -55,12 +55,12 @@ export default function DropDown(props) {
       >
         <ul
            
-          className="p-3 space-y-3 text-sm text-gray-700  xl:w-[230px] md:w-[140px]   min-[390px]:w-[350px]  min-[375px]:w-[375px]"
+          className={`p-3 space-y-3 text-sm text-gray-700  md:${props.widthXL}  min-[390px]:w-[350px]  min-[375px]:w-[375px]`}
           aria-labelledby="dropdownCheckboxButton"
         >
           {props.tags.map((attraction, id) => (
             <li key={id} className="hover:bg-[#f2f2f2] p-2 w-[100%] rounded">
-              <div    className="flex items-center  xl:w-[230px] md:w-[140px]   min-[390px]:w-[350px]  min-[375px]:w-[375px]">
+              <div    className={`flex items-center md:${props.widthXL}   min-[390px]:w-[350px]  min-[375px]:w-[375px]`}>
                 <input
                   
                   id={attraction}

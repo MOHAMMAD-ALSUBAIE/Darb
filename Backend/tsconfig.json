@@ -15,6 +15,7 @@
         "sourceMap": true,
         "declaration": true,
         "outDir": "build",
+        "rootDir": "./src",
         "allowJs": true,
         "noEmit": false,
         "esModuleInterop": true,
