@@ -15,12 +15,12 @@ const client_1 = require("@prisma/client");
 dotenv_1.default.config({ path: "./.env" });
 const port = process.env.PORT || 3000;
 const app = (0, express_1.default)();
-app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ["https://darb-ai-la9o.vercel.app"],
+    origin: ["http://localhost:5173"],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
 }));
+app.use(express_1.default.json());
 //@ts-ignore
 //@ts-ignore
 app.use(express_1.default.urlencoded({ extended: true }));

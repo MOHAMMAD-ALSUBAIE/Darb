@@ -47,7 +47,7 @@ export default function LoginForm() {
            try {
             axios.defaults.withCredentials = true;
             setLoad(true)
-            const response = await axios.post(`${import.meta.env.VITE_API}/user/login`, {
+            const response = await axios.post(`${import.meta.env.VITE_API}/user/login`,{
               email: emailInput,
               password:passwordInputSanitized
             })
