@@ -5,7 +5,6 @@ import isAuth from "../functions/IsAuth";
 import axios from "axios";
 import Banner from '../components/ItineraryPageComponets/Banner'
 import LikeSvg from "../components/LikeSvg";
-import Favorite from '/Favorite.png'
 import H1 from "../components/Headers/H1";
 export default function FavoriteListPage(){
     const [isAuthState,setIsAuthState]=useState(false)

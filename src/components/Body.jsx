@@ -4,8 +4,8 @@ import Circles from "./Circles.jsx";
 import CloudArrowUP from "/CloudArrowUp.svg";
 import CloudCheck from "/CloudCheck.svg"
 import Button from "./Button.jsx";
-import iconArrow from "/icon _chevron-right_.png";
-import { useEffect, useState } from "react";
+import iconArrow from "/icon_chevron-right_.svg";
+import { useState } from "react";
 import closeIcon from "/closeIcon.svg";
 import Card from "./Card.jsx";
 export default function Body(props) {
@@ -103,6 +103,7 @@ function handelClose(){
             <div className="pt-[80px] pb-[80px] md:w-[70%] w-[100%] flex flex-col md:items-start items-center">
           {/* content */}
           <div className=" md:mt-0 mt-[50px]">
+            
             <H1 ClassNameCustom="py-[50px]  text-[#fff] ">
               Darb's Landmark Explorer
             </H1>
@@ -123,6 +124,7 @@ function handelClose(){
             {error}
           </div> 
             <div className="">
+         
               <img
                 className=" relative cursor-pointer"
                 src={imageFile?CloudCheck:CloudArrowUP}//It will check if the input file has image or not
@@ -142,8 +144,9 @@ function handelClose(){
               type="file"
               required
             />
-
+    
             <form onSubmit={handlePredict}>
+              
               <Button
                 ClassNameCustom="flex mt-4 rounded-lg bg-[#9A9A9A] w-[196px] items-center justify-center h-[40px]"
                 type="submit"
@@ -155,13 +158,21 @@ function handelClose(){
                   alt="iconArrow"
                 />
               </Button>
-              <span className={`loader ${loading?"block":"hidden"} top-[15.4px]  `}></span>
             </form>
           </div>
         </div>
+        {loading ? (
+               <div style={{background:"#ffffff31"}} className=" rounded-full flex justify-center   self-center ">
+                 <span className="loading"></span>
+             </div>
+         
+          ) : (
+            ""
+          )}
         <div className="py-9 relative md:bottom-0 bottom-[100px] z-0 flex justify-center max-[600px]:w-[100%] ">
           <Circles />
         </div>
+      
       </section>
    
     </div>
