@@ -142,7 +142,7 @@ try {
                   type="text"
                   name=""
                   id=""
-                  placeholder="Enter Email Address"
+                  placeholder="Enter Full Name"
                   className="w-full px-4 py-3 mb-2 rounded-lg bg-[#FFFFFF] mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                   autofocus=""
                   autoComplete=""

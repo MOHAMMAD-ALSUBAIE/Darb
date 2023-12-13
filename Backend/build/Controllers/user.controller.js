@@ -5,10 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = exports.getFavoriteList = exports.addFavorite = exports.createUser = void 0;
 const client_1 = require("@prisma/client");
-const userPrisma = new client_1.PrismaClient().user;
 const prisma = new client_1.PrismaClient();
-const session = new client_1.PrismaClient().session;
-const favoritest = new client_1.PrismaClient().favoritest;
 // Create a custom type that extends the generated type
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const createUser = async (req, res) => {
@@ -25,7 +22,7 @@ const createUser = async (req, res) => {
         if (!emailPattern.test(email)) {
             return res.status(400).json({ error: "Email must be valid" });
         }
-        const checkUseEmail = await userPrisma.findUnique({
+        const checkUseEmail = await prisma.user.findUnique({
             where: {
                 email: email,
             },
@@ -34,7 +31,7 @@ const createUser = async (req, res) => {
             return res.status(422).json({ massage: "Email already exist" });
         }
         const hashedPassword = await bcrypt_1.default.hash(passwordInputSanitized, 10);
-        const response = await userPrisma.create({
+        const response = await prisma.user.create({
             data: {
                 name: FullNameSanitized,
                 email: email,
@@ -56,6 +53,9 @@ const createUser = async (req, res) => {
             status: 422,
         });
     }
+    finally {
+        prisma.$disconnect();
+    }
 };
 exports.createUser = createUser;
 const addFavorite = async (req, res) => {
@@ -65,7 +65,7 @@ const addFavorite = async (req, res) => {
         if (!itineraryID) {
             return res.status(400).json({ error: "Itinerary ID are required" });
         }
-        const response = await favoritest.create({
+        const response = await prisma.favoritest.create({
             data: {
                 userID: req.session.userID,
                 ItineraryID: itineraryID,
@@ -82,6 +82,9 @@ const addFavorite = async (req, res) => {
             message: "It is in favorite list already",
         });
     }
+    finally {
+        prisma.$disconnect();
+    }
 };
 exports.addFavorite = addFavorite;
 const getFavoriteList = async (req, res) => {
@@ -92,7 +95,7 @@ const getFavoriteList = async (req, res) => {
                 status: 401,
             };
         }
-        const favoritestResponse = await favoritest.findMany({
+        const favoritestResponse = await prisma.favoritest.findMany({
             where: {
                 userID: req.session.userID,
             },
@@ -123,11 +126,14 @@ const getFavoriteList = async (req, res) => {
         else
             res.status(400).json({ status: 400, massage: "filed" });
     }
+    finally {
+        prisma.$disconnect();
+    }
 };
 exports.getFavoriteList = getFavoriteList;
 const logout = async (req, res) => {
     try {
-        await session.delete({
+        await prisma.session.delete({
             where: {
                 id: req.sessionID,
             },
@@ -136,6 +142,9 @@ const logout = async (req, res) => {
     }
     catch (e) {
         res.status(400).json({ massage: "filed" });
+    }
+    finally {
+        prisma.$disconnect();
     }
 };
 exports.logout = logout;

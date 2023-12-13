@@ -44,6 +44,9 @@ export const login = async (req, res, next) => {
         });
     } catch (error) {
         res.status(400).json({ message: "Failed", isAuth: false });
-    }
+    }finally{
+        prisma.$disconnect()
+      
+      }
 };
 

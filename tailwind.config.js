@@ -12,5 +12,4 @@ export default {
              // Ensure fonts with spaces have " " surrounding it.
           },
     },
-    plugins: [require('flowbite/plugin')],
 };

@@ -1,14 +1,14 @@
-import Share from "/Share.png";
-import favorite from "/Vector.png";
+import Share from "/Share.svg";
+import favorite from "/Vector.svg";
 import H1 from "../Headers/H1";
 import ItineraryButton from "./ItineraryButton";
 import ActivityCard from "./ActivityCard";
-
+import UserDropDown from "../UserDropDown";
 import { useContext,useEffect, useState ,useRef} from "react";
-// import { AppContext } from "../ContextAPI/ContextApp";
 import {  useParams ,useNavigate} from 'react-router-dom';
 import axios from "axios";
 import isAuth from "../../functions/IsAuth";
+import { AppContext } from "../ContextAPI/ContextApp";
 
 export default function ItineraryBody() {
   const [ItineraryDays ,setItineraryDays] = useState([]);
@@ -18,6 +18,8 @@ export default function ItineraryBody() {
   const [copied,setCopied]=useState(false)
   const [loader,setLoader]=useState(false)
   const [addedToFavorite,setAddedToFavorite]=useState(false)
+  const { Itinerary, setItinerary } = useContext(AppContext);
+  
   const navigate=useNavigate()
 const url=useRef()
     let {id}= useParams();
@@ -31,13 +33,14 @@ const url=useRef()
       }
     },[copied])
       useEffect(()=>{
-        if(localStorage.getItem("Itinerary")){
-          const Itinerary=JSON.parse(localStorage.getItem("Itinerary"))
+        if(Itinerary){
+         // const Itinerary=JSON.parse(localStorage.getItem("Itinerary"))
           setItineraryDays(Itinerary.ItineraryDays)
           setItineraryDescription(Itinerary.ItineraryDescription)
           setCity(Itinerary.city)
-          localStorage.clear()
+          setLoader(true)
           return
+          
         }
         const getItinerary= async()=>{
           setLoader(false)
@@ -62,19 +65,19 @@ const handelFavorite= async (e)=>{
     setAddedToFavorite(true)
 
     const response=await isAuth()
+    console.log(response)
     if(response.data.isAuth){
 
     const  response= await axios.post(`${import.meta.env.VITE_API}/user/addFavorite`,{
         id
       })
 
-    }
-  } catch (error) {
-    const status=error.response.data.status
-    console.log(error.response.data)
-    if(status===401){
+    }else{
       navigate("/login")
     }
+  } catch (error) {
+    console.log(error)
+
   }
  
 }
@@ -90,12 +93,11 @@ const handelFavorite= async (e)=>{
   await navigator.clipboard.writeText(url.current.value)
   setCopied(true)
   }
-  const handlerLoad=()=>{
-    setLoader(true)
-  }
+
   return (
     
-    <section  className={`${loader?"":"blur-sm"} relative z-10 justify-around flex max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-4`}>
+    <section  className={`${loader?"blur-none":"blur-sm"} relative z-10 justify-around flex max-[600px]:flex-col gap-7 2xl:mx-[13%] mx-[10%] mt-4`}>
+     
        {!loader ? (
              <div className="flex absolute blur-none z-40 justify-center">
                  <span className="loading"></span>
@@ -134,7 +136,7 @@ const handelFavorite= async (e)=>{
 
                   <div>
                     {curr.map((curr ,i) => {
-                      return <ActivityCard keyIndex={i} onLoad={handlerLoad} name={curr.name} description={curr.description} location={curr.location} slugCategoryPOI={curr.slugCategoryPOI} slugCity={curr.slugCity} bannerImage={ curr.bannerImage} />;
+                      return <ActivityCard key={i}  name={curr.name} description={curr.description} location={curr.location} slugCategoryPOI={curr.slugCategoryPOI} slugCity={curr.slugCity} bannerImage={ curr.bannerImage} />;
                     })}
                   </div>
                 </div>
@@ -149,7 +151,7 @@ const handelFavorite= async (e)=>{
           <p>Save Itinerary</p>
           <img
             src={favorite}
-            className="w-[14px] h-[14px] self-center"
+            className="w-[20px]  self-center"
             
           />
         </button>
@@ -158,7 +160,7 @@ const handelFavorite= async (e)=>{
         <div>
         <ItineraryButton onClick={handelShareButton}>
           <p>Share Itinerary</p>
-          <img src={Share}  className="w-[13.33px] h-[16.36px]" />
+          <img src={Share} style={{stroke: "#FFFFF"}}  className="w-[20px]  " />
         </ItineraryButton>
           <div className={`bg-[#ffffff] ${visibleCopyCompont?"visible mt-4":"invisible"} shadow-xl transition-all duration-300 h-[100px] p-2 mt-1 rounded-md flex items-center gap-4 absolute right-2`}>
             <input ref={url} className="h-[50px] rounded-md" type="text" value={window.location.href}></input>

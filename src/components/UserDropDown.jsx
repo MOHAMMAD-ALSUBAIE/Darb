@@ -1,12 +1,28 @@
 import { Link } from "react-router-dom"
-import { useContext,useState } from "react";
-import { LandingPageContext } from "./ContextAPI/ContextApp";
+import { useState,useEffect } from "react";
+import isAuth from "../functions/IsAuth";
 import axios from "axios";
-export default function UserDropDown(){
-    const {isAuthState,setIsAuthState}=useContext(LandingPageContext)
+
+export default function UserDropDown(props){
+   // const {isAuthState,setIsAuthState}=useContext(LandingPageContext)
     const [load,setLoad]=useState()
+    const [isAuthState,setIsAuthState]=useState(false)
+   
+  useEffect(()=>{
+
+    const asyncFn = async () => {
+
+        const res =  await isAuth()
+        if (res?.data.isAuth) {
+            setIsAuthState(true)
+        } else {
+        }
+    }
+    asyncFn();
+  },[])
     const handelLogout= async ()=>{
       try {
+        if(isAuthState){
         console.log("cliked")
         setLoad(true)
         axios.defaults.withCredentials=true
@@ -15,6 +31,7 @@ export default function UserDropDown(){
       setIsAuthState(false)
       document.cookie = "username=connect.sid; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
       setLoad(false)
+        }
 
       } catch (error) {
         console.log(error)

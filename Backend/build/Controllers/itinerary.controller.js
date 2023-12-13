@@ -35,8 +35,9 @@ const ItineraryRequest = async (req, res, next) => {
             shopping
         });
         const itineraryArray = Object.values(response.data);
-        const [itineraryDays, descriptionOFcity] = itineraryArray;
         const userID = req.session.userID || null;
+        const [itineraryDays, descriptionOFcity] = itineraryArray;
+        //async function getData(){
         const itinerariesTable = await prisma.itineraries.create({
             data: {
                 userID: userID,
@@ -50,7 +51,7 @@ const ItineraryRequest = async (req, res, next) => {
         for (const [key, value] of Object.entries(itineraryDays)) {
             //@ts-ignore
             //@ts-ignore
-            value.forEach(async (element) => {
+            value.forEach(async (element, i) => {
                 //@ts-ignore
                 const itineraryTable = await prisma.itinerary.create({
                     //@ts-ignore
@@ -71,10 +72,15 @@ const ItineraryRequest = async (req, res, next) => {
                 });
             });
         }
+        //}
+        //getData()
         return res.status(200).json({ id: itineraryID, itinerary: { "itineraryDays": itineraryDaysValues, "ItineraryDescription": descriptionOFcity, city: itineraryDaysValues[0][0].slugCity } });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
+    }
+    finally {
+        prisma.$disconnect();
     }
 };
 exports.ItineraryRequest = ItineraryRequest;
@@ -111,6 +117,9 @@ const getItinerary = async (req, res, next) => {
     }
     catch (error) {
         res.status(500).json({ message: error.message });
+    }
+    finally {
+        prisma.$disconnect();
     }
 };
 exports.getItinerary = getItinerary;

@@ -9,7 +9,8 @@ export default function Card(props){
     setLoader(false)
    }
 return(
-    <div  className={`${loader?"blur-sm":"blur-none"} flex justify-center   max-[600px]:w-[95%] transition-all md:rounded-2xl  border-0  duration-1000  max-[600px]:ml-3  md:left-[25rem] 3xl:left-[28rem]  absolute z-40  flex-col items-center  self-center  bg-white  border-gray-200 rounded-xl  md:flex-row  hover:bg-gray-100 md:w-[870px] md:h-[600px] w-[400px] sm:h-[500px] `+""+props.ClassNameCustom}>
+  <div className="flex justify-center">
+    <div  className={`${loader?"blur-sm":"blur-none"} flex justify-center   max-[600px]:w-[95%] transition-all md:rounded-2xl  border-0  duration-1000  max-[600px]:ml-3     relative z-40  flex-col items-center  self-center  bg-white  border-gray-200 rounded-xl  md:flex-row  hover:bg-gray-100 md:w-[870px] md:h-[600px] w-[400px] sm:h-[500px] `+""+props.ClassNameCustom}>
      
     <img
       className={`object-cover md:rounded-l-2xl   md:h-[600px]   md:order-1 order-1 md:w-[440px]    `}
@@ -31,6 +32,7 @@ return(
     </div>
     <img id="close" src={props.closeIcon} onClick={handelClick} className="w-[20px] font-IBMPlexSans cursor-pointer  self-start mt-1 ml-1 h-[20px] transition-all hover:w-[25px] hover:h-[25px]   md:order-3 order-1 md:relative md:right-3 md:top-3   right-[10px] top-[10px] absolute"/>
 
+    </div>
     </div>
 )
 }

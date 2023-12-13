@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 export default function DropDownCity(props) {
   const [selectCountry, setSelectCountry] = useState("");
   const wrapper = useRef("");
+  const selectValue=useRef("")
   useEffect(() => {
     
       wrapper.current.classList.remove("active");
@@ -13,7 +14,7 @@ export default function DropDownCity(props) {
  
   const handlerSelectCounter = (e) => {
     props.selectCity(e.target.id); //content the name of counter
-    setSelectCountry(e.target.id);
+    setSelectCountry(e.target.getAttribute('data-value'));
     wrapper.current.classList.toggle("active");
   };
   const handelSelectBtn = () => {
@@ -30,12 +31,13 @@ export default function DropDownCity(props) {
   };
 
   return (
-    <>
+    <div>
        <button
         ref={wrapper}
         type="button"
         onClick={handelSelectBtn}
-        className={`notInEnverimtent font-IBMPlexSans flex justify-between dropdown ${props.customClassName} ${
+      //  style={{width:"10%"}}
+        className={`notInEnverimtent md:w-[22vw] font-IBMPlexSans slef-center flex justify-between dropdown ${props.customClassName} ${
           props.active.options ? "active" : ""
         } wrapper w-[${props.width}]  relative z-50 top-1`}
       >
@@ -55,20 +57,21 @@ export default function DropDownCity(props) {
  
     
      
-      <div className="content absolute invisible transition-all duration-200 w-[100%] bg-[#FFFFFF] p-[20px] mt-[15px] rounded-[7px]">
+      <div className="content absolute invisible transition-all duration-200 md:w-[20vw] bg-[#FFFFFF] p-[20px] mt-[15px] rounded-[7px]">
      
       
        
         <ul className={`options mt-[10px] max-h-[250px] overflow-y-auto overflow-x-hidden`}>
-        { props.options.map((item) => {
+        { props.options.map((item,i) => {
                 return (
                   <li
                     onClick={handlerSelectCounter}
                     className="font-IBMPlexSans text-left"
-                    key={item}
-                    id={item}
+                    key={i}
+                    id={item[1]}
+                    data-value={item[0]}
                   >
-                    {item}
+                    {item[0]}
                   </li>
                 );
               })}
@@ -77,6 +80,6 @@ export default function DropDownCity(props) {
         </ul>
       </div>
       </button>
-    </>
+    </div>
   );
 }

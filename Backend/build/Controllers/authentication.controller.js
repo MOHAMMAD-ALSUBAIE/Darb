@@ -44,6 +44,9 @@ const login = async (req, res, next) => {
     catch (error) {
         res.status(400).json({ message: "Failed", isAuth: false });
     }
+    finally {
+        exports.prisma.$disconnect();
+    }
 };
 exports.login = login;
 //# sourceMappingURL=authentication.controller.js.map

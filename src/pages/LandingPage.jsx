@@ -2,29 +2,12 @@ import Header from "../components/Header";
 import Body from "../components/Body";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import Card from "../components/Card";
-import closeIcon from "/closeIcon.png"
 import isAuth from "../functions/IsAuth"
-import axios from "axios";
-import { LandingPageContext } from "../components/ContextAPI/ContextApp";
 export default function LandingPage() {
     
-    const [isAuthState,setIsAuthState]=useState(false)
     const [loader,setLoader]=useState(false)
    
-  useEffect(()=>{
 
-    const asyncFn = async () => {
-
-        const res =  await isAuth()
-        if (res.data.isAuth) {
-            setIsAuthState(true)
-        } else {
-        }
-    }
-    asyncFn();
-  })
   useEffect(() => {
     
     const handleLoad = () => {
@@ -41,15 +24,14 @@ export default function LandingPage() {
 
  
     return (
-        <LandingPageContext.Provider value={{isAuthState,setIsAuthState}}>
+       
 
-        <div  className={`relative z-20 `}>
+        <div className="flex flex-col"  >
         <Header />
         <Body  />
         <Footer/>
         </div>
            
-        </LandingPageContext.Provider>
 
             
  

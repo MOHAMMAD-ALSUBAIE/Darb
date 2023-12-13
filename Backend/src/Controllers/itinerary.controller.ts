@@ -27,16 +27,17 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
     }
   });
  
-
     const response= await  axios.post(`https://fastapi-production-c2d8.up.railway.app/itinerary?city=${city}&&days=${days}`,{
       attractions,
       restaurants,
       shopping
     })
-    
     const itineraryArray=Object.values(response.data)
-    const [itineraryDays,descriptionOFcity]=itineraryArray
     const userID=req.session.userID||null
+    const [itineraryDays,descriptionOFcity]=itineraryArray
+    //async function getData(){
+     
+     
     const itinerariesTable= await prisma.itineraries.create({
       data:{
           userID:userID,
@@ -49,45 +50,53 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
    const itineraryID=itinerariesTable.id
    const itineraryDaysValues= Object.values(itineraryDays)
     //@ts-ignore
-   for( const [key,value] of Object.entries(itineraryDays)){
-        //@ts-ignore
- 
-        //@ts-ignore
 
-    value.forEach(async (element) => {
+  
+for( const [key,value] of Object.entries(itineraryDays)){
+  //@ts-ignore
 
-            //@ts-ignore
-      const itineraryTable= await prisma.itinerary.create({
-                //@ts-ignore
+  //@ts-ignore
 
-          data:{
-             name:element.name,
-             description:element.description,
-             bannerImage:element.bannerImage[0],
-             slugCategoryPOI:element.slugCategoryPOI,
-             slugCity:element.slugCity,
-             location:element.location,
-             day:key,
-             itineraryID:itineraryID
-                 //@ts-ignore
+value.forEach(async (element,i) => {
 
-        //  ...values
-         //@ts-ignore
+      //@ts-ignore
+const itineraryTable= await prisma.itinerary.create({
+          //@ts-ignore
 
-          // userID:itineraryID,
-          }
+    data:{
+       name:element.name,
+       description:element.description,
+       bannerImage:element.bannerImage[0],
+       slugCategoryPOI:element.slugCategoryPOI,
+       slugCity:element.slugCity,
+       location:element.location,
+       day:key,
+       itineraryID:itineraryID
+           //@ts-ignore
 
-   
+  //  ...values
+   //@ts-ignore
 
-        })
-    });
+    // userID:itineraryID,
+    }
 
-      }
+
+
+  })
+});
+
+}
+//}
+//getData()
+
 
   return res.status(200).json({ id: itineraryID,itinerary:{"itineraryDays":itineraryDaysValues,"ItineraryDescription":descriptionOFcity,city:itineraryDaysValues[0][0].slugCity} });
  } catch (error) {
   res.status(500).json({ message: error.message });
- }
+ }finally{
+  prisma.$disconnect()
+
+}
 };
 
 export const getItinerary = async (req: any, res: any, next: any) => {
@@ -124,10 +133,13 @@ let finalArray={}
       
     });
     const city=finalArray['Day 1'][0].slugCity
-
     res.status(200).json({massage:"success",data:{finalArray,citydescription,city}});
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+  }finally{
+    prisma.$disconnect()
+
   }
 }
 
