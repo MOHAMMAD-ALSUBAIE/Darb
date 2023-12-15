@@ -12,3 +12,6 @@ https://app.planetscale.com
 You should have accout in planetscale 
 It is database hosting
 afer had account they provied you url to connect to the database
+
+secretKey=""
+random number use for encrypt session id that send to brower to store it in cookies
