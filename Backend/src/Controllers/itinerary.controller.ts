@@ -2,6 +2,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// {
+//   log: ['query', 'info', 'warn', 'error'],
+
+// }
 import axios from "axios";
 
 export const ItineraryRequest = async (req: any, res: any, next: any) => {
@@ -9,13 +13,19 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
   let attractions = [];
   let restaurants = [];
   let shopping = [];
-  const datePattern=/[^0-9\/\-]/g
+ 
   const city=req.body.sanitizeCity.replace(/[^a-zA-Z\s\_]/g, '')
-  const arrayData=req.body.arrayData
-  const startDate =new Date(req.body.date.sanitizeStartDate.replace(datePattern, '')).getTime();
-  const endDate=new Date(req.body.date.sanitizeEndDate.replace(datePattern, '')).getTime()
-
-  const days= ((endDate-startDate)/(1000*60*60*24))+1
+  const arrayData=req.body.arrayData //it will content clint's desires in his itinerary like [ [ 'Restaurants-0', 'Fast Food' ]
+  const startDate =new Date(req.body.date.sanitizeStartDate);
+  const endDate=new Date(req.body.date.sanitizeEndDate)
+//@ts-ignore
+  if(isNaN(startDate) || isNaN(endDate) ){//this will check if the date is invalid, if not it will throw an error 
+    throw {
+      message: "Date is invalid",
+      status: 422,
+    };    
+  }
+  const days= ((endDate.getTime()-startDate.getTime())/(1000*60*60*24))+1
  
   arrayData.forEach((curr) => {
     if (curr[0].includes("Attractions")) {
@@ -32,11 +42,15 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
       restaurants,
       shopping
     })
+
+
     const itineraryArray=Object.values(response.data)
+    console.log(itineraryArray)
     const userID=req.session.userID||null
     const [itineraryDays,descriptionOFcity]=itineraryArray
     //async function getData(){
-     
+      console.log(itineraryDays)
+
      
     const itinerariesTable= await prisma.itineraries.create({
       data:{
@@ -51,40 +65,48 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
    const itineraryDaysValues= Object.values(itineraryDays)
     //@ts-ignore
 
+
+    // ... your existing code ...
+    
+    //do for over the days of itinerary
+try {
+  for( const [key,value] of Object.entries(itineraryDays)){
+    //@ts-ignore
   
-for( const [key,value] of Object.entries(itineraryDays)){
-  //@ts-ignore
-
-  //@ts-ignore
-
-value.forEach(async (element,i) => {
-
-      //@ts-ignore
-const itineraryTable= await prisma.itinerary.create({
-          //@ts-ignore
-
-    data:{
-       name:element.name,
-       description:element.description,
-       bannerImage:element.bannerImage[0],
-       slugCategoryPOI:element.slugCategoryPOI,
-       slugCity:element.slugCity,
-       location:element.location,
-       day:key,
-       itineraryID:itineraryID
-           //@ts-ignore
-
-  //  ...values
-   //@ts-ignore
-
-    // userID:itineraryID,
-    }
-
-
-
-  })
-});
-
+    //@ts-ignore
+  //every day have its activites we will store each activity in row in itinerary table
+  value.forEach(async (element,i) => {
+  
+        //@ts-ignore
+  const itineraryTable= await prisma.itinerary.create({
+            //@ts-ignore
+  
+      data:{
+         name:element.name,
+         description:element.description,
+         bannerImage:element.bannerImage[0],
+         slugCategoryPOI:element.slugCategoryPOI,
+         slugCity:element.slugCity,
+         location:element.location,
+         day:key,
+         itineraryID:itineraryID
+             //@ts-ignore
+  
+    //  ...values
+     //@ts-ignore
+  
+      // userID:itineraryID,
+      }
+  
+  
+  
+    })
+  });
+  
+  }
+} catch (error) {
+  console.log(error)
+  return res.status(500).json({ message: error.message });
 }
 //}
 //getData()
@@ -92,10 +114,15 @@ const itineraryTable= await prisma.itinerary.create({
 
   return res.status(200).json({ id: itineraryID,itinerary:{"itineraryDays":itineraryDaysValues,"ItineraryDescription":descriptionOFcity,city:itineraryDaysValues[0][0].slugCity} });
  } catch (error) {
-  res.status(500).json({ message: error.message });
+  console.log(error)
+  if(error.status==422){
+    return res.status(422).json({ message: error.message });
+  }else{
+    res.status(500).json({ message: error.message });
+
+  }
  }finally{
   prisma.$disconnect()
-
 }
 };
 

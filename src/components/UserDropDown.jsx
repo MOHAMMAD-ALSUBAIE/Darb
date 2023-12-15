@@ -42,7 +42,8 @@ export default function UserDropDown(props){
     return(
         <div className=" font-IBMPlexSans flex top-8 flex-col absolute right-[0px]">
   <button
-    onClick={() => {
+    onClick={ async () => {
+      
       document
         .getElementById("dropdownAvatar")
         .classList.toggle("hidden");

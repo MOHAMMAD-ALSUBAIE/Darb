@@ -16,6 +16,14 @@ const createUser = async (req, res) => {
         const passwordInputSanitized = password.replace(passwordPattern, "");
         const brithDateSanitized = birthDate.replace(/[^0-9\/\-]/g, "");
         const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        const birthDateCheck = new Date(brithDateSanitized);
+        //@ts-ignore
+        if (isNaN(birthDateCheck)) { //this will check if the date is invalid, if not it will throw an error 
+            throw {
+                message: "Date is invalid",
+                status: 422,
+            };
+        }
         if (!FullName || !birthDate || !email || !password) {
             return res.status(400).json({ error: "Name and email are required" });
         }
@@ -47,7 +55,13 @@ const createUser = async (req, res) => {
             status: 201,
         });
     }
-    catch (e) {
+    catch (error) {
+        if (error.message) {
+            res.status(422).json({
+                message: error.message,
+                status: 422,
+            });
+        }
         res.status(422).json({
             message: "Error",
             status: 422,

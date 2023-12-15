@@ -5,6 +5,7 @@ import isAuth from "../functions/IsAuth";
 import axios from "axios";
 import Banner from '../components/ItineraryPageComponets/Banner'
 import LikeSvg from "../components/LikeSvg";
+import FavoirteItinerary from "/FavoirteItinerary.svg"
 import H1 from "../components/Headers/H1";
 export default function FavoriteListPage(){
     const [isAuthState,setIsAuthState]=useState(false)
@@ -78,7 +79,7 @@ export default function FavoriteListPage(){
                          src={favorite[1][i].bannerImage}
                            
                          />
-                         <img className="absolute top-4 right-3" src={Favorite}/>
+                         <img className="absolute top-4 right-3" width={30} src={FavoirteItinerary}/>
                         </div>
 
                        

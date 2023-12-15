@@ -5,7 +5,6 @@ import { useRef, useState, useEffect } from "react";
 export default function DropDownCity(props) {
   const [selectCountry, setSelectCountry] = useState("");
   const wrapper = useRef("");
-  const selectValue=useRef("")
   useEffect(() => {
     
       wrapper.current.classList.remove("active");
@@ -37,11 +36,11 @@ export default function DropDownCity(props) {
         type="button"
         onClick={handelSelectBtn}
       //  style={{width:"10%"}}
-        className={`notInEnverimtent md:w-[22vw] font-IBMPlexSans slef-center flex justify-between dropdown ${props.customClassName} ${
+        className={`notInEnverimtent md:w-[22vw] font-IBMPlexSans  flex justify-between  dropdown ${props.customClassName} ${
           props.active.options ? "active" : ""
         } wrapper w-[${props.width}]  relative z-50 top-1`}
       >
-        <span className="dropdown flex items-center gap-1">
+        <span className="dropdown flex self-center gap-1">
           <img src={props.icon} className="h-4 w-4" />
           <p>{selectCountry ? selectCountry : props.placeHolder}</p>{" "}
         </span>

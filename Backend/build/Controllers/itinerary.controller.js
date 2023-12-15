@@ -6,18 +6,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getItinerary = exports.ItineraryRequest = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
+// {
+//   log: ['query', 'info', 'warn', 'error'],
+// }
 const axios_1 = __importDefault(require("axios"));
 const ItineraryRequest = async (req, res, next) => {
     try {
         let attractions = [];
         let restaurants = [];
         let shopping = [];
-        const datePattern = /[^0-9\/\-]/g;
         const city = req.body.sanitizeCity.replace(/[^a-zA-Z\s\_]/g, '');
-        const arrayData = req.body.arrayData;
-        const startDate = new Date(req.body.date.sanitizeStartDate.replace(datePattern, '')).getTime();
-        const endDate = new Date(req.body.date.sanitizeEndDate.replace(datePattern, '')).getTime();
-        const days = ((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        const arrayData = req.body.arrayData; //it will content clint's desires in his itinerary like [ [ 'Restaurants-0', 'Fast Food' ]
+        const startDate = new Date(req.body.date.sanitizeStartDate);
+        const endDate = new Date(req.body.date.sanitizeEndDate);
+        //@ts-ignore
+        if (isNaN(startDate) || isNaN(endDate)) { //this will check if the date is invalid, if not it will throw an error 
+            throw {
+                message: "Date is invalid",
+                status: 422,
+            };
+        }
+        const days = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
         arrayData.forEach((curr) => {
             if (curr[0].includes("Attractions")) {
                 attractions.push(curr[1]);
@@ -35,9 +44,11 @@ const ItineraryRequest = async (req, res, next) => {
             shopping
         });
         const itineraryArray = Object.values(response.data);
+        console.log(itineraryArray);
         const userID = req.session.userID || null;
         const [itineraryDays, descriptionOFcity] = itineraryArray;
         //async function getData(){
+        console.log(itineraryDays);
         const itinerariesTable = await prisma.itineraries.create({
             data: {
                 userID: userID,
@@ -48,36 +59,51 @@ const ItineraryRequest = async (req, res, next) => {
         const itineraryID = itinerariesTable.id;
         const itineraryDaysValues = Object.values(itineraryDays);
         //@ts-ignore
-        for (const [key, value] of Object.entries(itineraryDays)) {
-            //@ts-ignore
-            //@ts-ignore
-            value.forEach(async (element, i) => {
+        // ... your existing code ...
+        //do for over the days of itinerary
+        try {
+            for (const [key, value] of Object.entries(itineraryDays)) {
                 //@ts-ignore
-                const itineraryTable = await prisma.itinerary.create({
+                //@ts-ignore
+                //every day have its activites we will store each activity in row in itinerary table
+                value.forEach(async (element, i) => {
                     //@ts-ignore
-                    data: {
-                        name: element.name,
-                        description: element.description,
-                        bannerImage: element.bannerImage[0],
-                        slugCategoryPOI: element.slugCategoryPOI,
-                        slugCity: element.slugCity,
-                        location: element.location,
-                        day: key,
-                        itineraryID: itineraryID
+                    const itineraryTable = await prisma.itinerary.create({
                         //@ts-ignore
-                        //  ...values
-                        //@ts-ignore
-                        // userID:itineraryID,
-                    }
+                        data: {
+                            name: element.name,
+                            description: element.description,
+                            bannerImage: element.bannerImage[0],
+                            slugCategoryPOI: element.slugCategoryPOI,
+                            slugCity: element.slugCity,
+                            location: element.location,
+                            day: key,
+                            itineraryID: itineraryID
+                            //@ts-ignore
+                            //  ...values
+                            //@ts-ignore
+                            // userID:itineraryID,
+                        }
+                    });
                 });
-            });
+            }
+        }
+        catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: error.message });
         }
         //}
         //getData()
         return res.status(200).json({ id: itineraryID, itinerary: { "itineraryDays": itineraryDaysValues, "ItineraryDescription": descriptionOFcity, city: itineraryDaysValues[0][0].slugCity } });
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error);
+        if (error.status == 422) {
+            return res.status(422).json({ message: error.message });
+        }
+        else {
+            res.status(500).json({ message: error.message });
+        }
     }
     finally {
         prisma.$disconnect();
