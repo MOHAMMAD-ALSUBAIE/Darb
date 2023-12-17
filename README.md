@@ -1,69 +1,52 @@
-## **Darb-AI**
+Clone and Setup
 
-This repository contains the front-end and back-end implementations for **[DarbAI-API-Endpoint](https://github.com/MohammmedAb/DarbAI-API-Endpoint)**, managed by **[MohammmedAb](https://github.com/MohammmedAb/)**. Darb-AI website has a seamless and friendly user interface implemented using **React** and **Tailwind CSS**
+Follow these steps to clone and run the project locally.
+Prerequisites
 
-### **Prerequisites**
+Make sure you have the following installed:
 
-**Node.js via Installer**
+    Node.js
+    npm (Node Package Manager)
 
-Download the installer directly through Node.js website: **[Node.js](https://nodejs.org/en/download)**
+Clone the Repository
 
-**nodemon via npm**
+git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb-AI.git
+#Client Setup
 
-`npm install -g nodemon`
+# Navigate to the client directory
 
-**ts-node via npm**
+cd DARB
 
-`npm install -g ts-node`
+# Install dependencies
 
-**typescript via npm**
+npm install
 
-`npm install -g typescript`
+# Start the client
 
-### **Setup**
+npm run dev
 
-**clone the repository**
+#Server Setup
 
-`git clone https://github.com/MOHAMMAD-ALSUBAIE/Darb-AI.git`
+# Navigate to the server directory
 
-#### **client setup:**
+cd Backend
 
-**navigate to repository**
+# Install dependencies
 
-`cd Darb-AI`
+npm install
 
-**install dependencies**
+# Create a .env file based on .env.example and configure your environment variables
 
-`npm install`
+# Create an Environment File:
 
-**start client**
+# Duplicate the .env.example file and rename it to .env.
 
-`npm run dev`
+# Review and update the environment variables in the newly created .env file.
 
-#### **server setup:**
+# Run command
 
-**navigate to repository**
+npx prisma db push
 
-`cd Darb-AI`
+# Start the server
 
-then
-
-`cd backend`
-
-**install dependencies**
-
-`npm install`
-
-**create `.env` file similar to `.env.example`.**
-
-**the `.env` file must contain two variables: `DATABASE_URL` and `secretKey`.**
-
-**you can accomplish this by either creating a new `PlanetScale` account, setting up a database, and filling in these variables, or by using the pre-made account variables provided to you.**
-
-**after successfully setting up the `.env` file, run the following command to push the state of the Prisma schema file to the database.**
-
-`npx prisma db push`
-
-**start the server**
-
-`nodemon src/index.ts`
+nodemon src/index.ts
