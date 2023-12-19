@@ -157,7 +157,7 @@ export default function Form() {
 
   return (
     <>
-      <div id="form" className="form mt-[300px] absolute z-10">
+      <div id="form" className="form md:mt-[400px] md:absolute">
         <form
           onClick={handelClickForm}
           id="forma"

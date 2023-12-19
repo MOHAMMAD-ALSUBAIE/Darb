@@ -31,9 +31,8 @@ export default function FavoriteListPage() {
           setFavorite([response.data.data, response.data.itineraries]);
         }
       } catch (error) {
-        console.log(error.response);
         setLoad(false);
-        if (error.response.status == 401) {
+        if (!error.response.isAuth) {
           navigate("/login");
         }
       }

@@ -45,7 +45,7 @@ export default function NewHeader() {
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link to={"/"} className="flex items-center">
-            <img src={logo} className="mr-3 w-20" alt="Logo" />
+            <img src={logo} className="ml-[5vw] max-[600px]:ml-0 w-20" alt="Logo" />
           </Link>
 
           {isAuthState ? (

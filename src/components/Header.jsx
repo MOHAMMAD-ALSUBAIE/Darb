@@ -4,7 +4,6 @@ import logo from "/Logo.svg";
 import H1 from "./Headers/H1.jsx";
 import H2 from "./Headers/H2.jsx";
 import Conatiner from "./container";
-import UserDropDown from "./UserDropDown.jsx";
 export default function Header() {
   return (
 
@@ -13,7 +12,6 @@ export default function Header() {
       <div className=" w-[100%]   grid md:grid-cols-2  grid-cols-1">
         <div className="    block">
           <div className="flex">
-          <img className=" bottom-[30px] right-[6vw]   relative z-40" src={logo} width={250} alt="logo" /><UserDropDown />
           </div>
           {/*content  */}
           <H1 className="pb-[10px] text-[#230751]  md:block flex justify-center " >Experience AI-Powered<br/>Trip Planning with Darb</H1>
@@ -21,9 +19,9 @@ export default function Header() {
 
         </div>
 
-        <img className=" hidden md:block    rounded-tl-[12rem] w-[70vw]  h-[697px]   " src={qasr} alt="qasr" />
-      
+        <img className=" hidden md:block  gr   rounded-tl-[12rem] w-[70vw]  h-[697px]   " src={qasr} alt="qasr" />
         <Form />
+
       </div>
 
       </Conatiner>

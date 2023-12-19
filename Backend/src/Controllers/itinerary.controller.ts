@@ -13,7 +13,24 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
   let attractions = [];
   let restaurants = [];
   let shopping = [];
- 
+  const AllowedAttractions = [
+    "Family & Kids",
+    "Amusement Parks",
+    "Cultural & Historical",
+    "Iconic Landmarks",
+    "Parks",
+    "Nature & wildlife",
+  ];
+
+  const AllowedRestaurants = [
+    "Fast Food",
+    "Bakery & Cafe",
+    "Specialty Coffee",
+    "Saudi Traditional dishes",
+    "Fine Dining",
+    "Seafood",
+  ];
+  const AllowedShopping = ["Traditional Markets", "Malls"];
   const city=req.body.sanitizeCity.replace(/[^a-zA-Z\s\_]/g, '')
   const arrayData=req.body.arrayData //it will content clint's desires in his itinerary like [ [ 'Restaurants-0', 'Fast Food' ]
   const startDate =new Date(req.body.date.sanitizeStartDate);
@@ -28,28 +45,19 @@ export const ItineraryRequest = async (req: any, res: any, next: any) => {
   const days= ((endDate.getTime()-startDate.getTime())/(1000*60*60*24))+1
  
   arrayData.forEach((curr) => {
-    if (curr[0].includes("Attractions")) {
+    if (curr[0].includes("Attractions") && AllowedAttractions.includes(curr[1])) {
       attractions.push(curr[1]);
-     } else if (curr[0].includes("Restaurants")) {
+     } else if (curr[0].includes("Restaurants") &&AllowedRestaurants.includes(curr[1])) {
       restaurants.push(curr[1]);
-    }  else if (curr[0].includes("Shopping")) {
+    }  else if (curr[0].includes("Shopping")&& AllowedShopping.includes(curr[1])) {
       shopping.push(curr[1]);
     }
   });
- 
-    const response= await  axios.post(`https://fastapi-production-c2d8.up.railway.app/itinerary?city=${city}&&days=${days}`,{
-      attractions,
-      restaurants,
-      shopping
-    })
 
-
-    const itineraryArray=Object.values(response.data)
-    console.log(itineraryArray)
+   const data= await postToItineraryModel({attractions:attractions,restaurants:restaurants,shopping:shopping},days,city)
+    const itineraryArray=Object.values(data)
     const userID=req.session.userID||null
     const [itineraryDays,descriptionOFcity]=itineraryArray
-    //async function getData(){
-      console.log(itineraryDays)
 
      
     const itinerariesTable= await prisma.itineraries.create({
@@ -170,6 +178,19 @@ let finalArray={}
   }
 }
 
+
+async function postToItineraryModel(object:{},days:number,city:string){
+  const response= await  fetch(`https://fastapi-production-c2d8.up.railway.app/itinerary?city=${city}&&days=${days}`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(object),
+   
+  })
+return response.json()
+}
 
 //upeer loop that go throght all elemments
 //insed this loop will be two things create new poroprt call day[number] 
