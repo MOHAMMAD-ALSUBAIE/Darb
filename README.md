@@ -62,7 +62,7 @@ then
 
 **after successfully setting up the `.env` file, run the following command to push the state of the Prisma schema file to the database.**
 
-**secrtyKey use for encrypt the session id of the user that store in the cookies insed the browser, Write your random ``secretKey`` and keep it secure in `.env` file **
+secrtyKey use for encrypt the session id of the user that store in the cookies insed the browser, Write your random ``secretKey`` and keep it secure in `.env` file 
 
 `npx prisma db push`
 
